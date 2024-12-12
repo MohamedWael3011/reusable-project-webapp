@@ -7,8 +7,8 @@ const App = () => {
     <Routes>
       {/* Define your routes */}
       <Route path="/" element={<HomeView />} />
-      {/* <Route path="/login" element={<Login />} /> */}
-      {/* <Route path="/signup" element={<Signup />} /> */}
+      <Route path="/signin" element={<>Sign In</>} />
+      <Route path="/signup" element={<>Sign up</>} />
 
       {/* Redirect unmatched routes to Home */}
       <Route path="*" element={<Navigate to="/" replace />} />
