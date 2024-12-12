@@ -13,7 +13,7 @@ const TextInput: React.FC<TextInputProps> = ({ label,type = "text", placeholder,
     <div className="mb-4">
         <label className="block text-primary text-sm  font-medium mb-1">{label}</label>
         <input type={type} placeholder={placeholder} value={value} onChange={onChange}
-        className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring focus:border-white text-black"
+        className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring focus:border-blue text-black"
       />
     </div>
   );
