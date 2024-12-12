@@ -1,12 +1,13 @@
 import { Navigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { HomeView } from "./views/HomeView";
+import UserMainView from "./views/UserMainView";
 
 const App = () => {
   return (
     <Routes>
       {/* Define your routes */}
-      <Route path="/" element={<HomeView />} />
+      <Route path="/" element={<UserMainView />} />
       <Route path="/signin" element={<>Sign In</>} />
       <Route path="/signup" element={<>Sign up</>} />
 
