@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import {Login} from "./views/Login"
 import {Signup} from "./views/Signup"
 import { AdminMainView } from "./views/AdminMainView";
-
+import { UserMainView } from "./views/UserMainView";
 
 const App = () => {
   return (
@@ -15,6 +15,7 @@ const App = () => {
       <Route path="/signin" element={<Login/>} />
       <Route path="/signup" element={<Signup/>} />
       <Route path="/admin" element={<AdminMainView/>} />
+      <Route path="/user" element={<UserMainView/>}/>
       
 
       {/* Redirect unmatched routes to Home */}
