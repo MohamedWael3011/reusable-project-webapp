@@ -25,10 +25,12 @@ const ReportsUpload: React.FC = () =>
 
     return (
       <div className="min-h-screen flex items-center">
-        {/* Side Menu */}
-         <UserSidepanel></UserSidepanel>
 
-         <main className="w-[70%] bg-gray-50 h-[100%]"> {/* 50% width and full height */}
+             {/* <SideMenu /> */}
+        <div className="w-[510px]"><UserSidepanel/></div>
+
+        {/* Main*/}
+         <main className="w-full h-[100%]"> {/* 50% width and full height */}
          <div className="max-w-full mx-auto p-8 rounded-md">
          <h2 className="text-2xl font-bold text-[#033469] mb-2">Upload Report</h2>
          <p className="text-gray-500 text-[16px]">
@@ -39,7 +41,7 @@ const ReportsUpload: React.FC = () =>
             {/* Input Row */}
             <div className="flex mb-6">
                  {/* Accepted SubmissionsProject Theme (Combo Box) */}
-              <div className="flex-1  rounded-xl">
+              <div className="flex-1 p-4 rounded-xl">
               <ComboBox
                 label="Accepted Submissions"
                 value={AcceptedSubmissions}
@@ -59,8 +61,6 @@ const ReportsUpload: React.FC = () =>
                   required={true}
                 />
               </div>
-
-             
             </div>
 
             {/* Proposal Text */}

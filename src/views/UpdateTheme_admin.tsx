@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Calendar from "../components/Calendar"; // Use the Calendar component
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
+import AdminSidepanel from '@/components/ui/AdminSidepanel';
 
 const UpdateTheme: React.FC = () => {
     const [themID, setThemeId] = useState("");
@@ -24,6 +25,7 @@ const UpdateTheme: React.FC = () => {
             {/* Left Section: Side Menu */}
             <div className="w-[510px] bg-gray-200">
                 {/* <SideMenu /> */}
+                <AdminSidepanel></AdminSidepanel>
             </div>
 
         

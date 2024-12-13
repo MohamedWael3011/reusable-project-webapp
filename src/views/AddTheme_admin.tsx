@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import SideMenu from "../components/SideMenu"; // Assume you have a SideMenu component
+import AdminSidepanel from "@/components/ui/AdminSidepanel"; // Assume you have a SideMenu component
 import Calendar from "../components/Calendar"; // Use the Calendar component
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
@@ -24,6 +24,7 @@ const AddThemePage: React.FC = () => {
             {/* Left Section: Side Menu */}
             <div className="w-[510px] bg-gray-200">
                 {/* <SideMenu /> */}
+                <AdminSidepanel></AdminSidepanel>
             </div>
 
         

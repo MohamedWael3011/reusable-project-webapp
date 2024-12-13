@@ -20,9 +20,11 @@ const SubmitProposal: React.FC = () => {
 
     <div className="min-h-screen flex justify-end items-center"> {/* Flex container, aligned to the right */}
     {/* Side Panel */}
-    <UserSidepanel>
-
-    </UserSidepanel>
+    <div className="w-[510px]">
+                {/* <SideMenu /> */}
+                <UserSidepanel/>
+            </div>
+   
     {/* Main Content */}
     <main className="w-[70%] bg-gray-50 h-[100%]"> {/* 50% width and full height */}
       <div className="max-w-full mx-auto p-8 rounded-md">
@@ -34,7 +36,7 @@ const SubmitProposal: React.FC = () => {
             {/* Input Row */}
             <div className="flex space-x-2 ">
               {/* Proposal Title */}
-              <div className="flex-1 px-6 py-2 rounded-xl">
+              <div className="flex-1 p-4 rounded-xl">
                 <TextInput
                   label="Proposal Title"
                   placeholder="Enter Title"
@@ -45,7 +47,7 @@ const SubmitProposal: React.FC = () => {
               </div>
 
               {/* Project Theme (Combo Box) */}
-              <div className="flex-1 rounded-xl">
+              <div className="flex-1 p-4 rounded-xl">
               <ComboBox
                 label="Project Theme"
                 value={projectTheme}
