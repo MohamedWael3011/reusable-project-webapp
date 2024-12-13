@@ -12,11 +12,14 @@ const data = [
 export const AdminMainView = () => {
 
   return (
-    <>
+    <div className='' >
+
 
         <TableAdmin columns={columns} data={data}/>
 
-    </>
+    </div>
+
+
 
   );
 };

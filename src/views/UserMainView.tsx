@@ -9,6 +9,7 @@ const UserMainView = () => {
         "ay klam Dropdown",
         "sdsa"
     ];
+    
     return (
         <div className="bg-background h-screen grid lg:grid-cols-[30%_auto]">
             <div className="flex flex-col justify-evenly items-center gap-5">
@@ -27,11 +28,6 @@ const UserMainView = () => {
                 </div>
             </div>
         </div>
-
-
-
-
-
     )
 }
 
