@@ -43,7 +43,7 @@ const UserSidepanel: React.FC = () => {
 
   
     return (
-      <div className="bg-background h-screen overflow-hidden w-full">
+      <div className="bg-background h-screen overflow-hidden w-[30%]">
         <div className="flex flex-col pt-10 pb-10 gap-5 justify-evenly items-center bg-[#CEE0F3] w-full ">
           <img src={LOGO} className="w-48" alt="Logo" />
           <div className="flex justify-center flex-col ">
