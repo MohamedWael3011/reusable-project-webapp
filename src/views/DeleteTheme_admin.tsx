@@ -11,7 +11,7 @@ const DeleteTheme: React.FC = () => {
     const [budget, setBudget] = useState("");
     const [deadline, setDeadline] = useState<string | null>(null);
 
-    const handleDateSelect = (date: Date) => {
+    const handleDate = (date: Date) => {
         setDeadline(date.toDateString());
     };
 
@@ -101,7 +101,7 @@ const DeleteTheme: React.FC = () => {
                         </div>
 
                         <div className="mt-4">
-                            <Calendar onDateSelect={handleDateSelect} className="w-full bg-[#CEE0F3] rounded-xl p-4"/>
+                            <Calendar onDateSelect={handleDate} className="w-full bg-[#CEE0F3] rounded-xl p-4"/>
                         </div>
                       
                     </div>

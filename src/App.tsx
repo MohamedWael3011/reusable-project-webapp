@@ -9,6 +9,7 @@ import AddThemePage from "./views/AddTheme_admin";
 import UpdateTheme from "./views/UpdateTheme_admin";
 import { AdminMainView } from "./views/AdminMainView";
 import DeleteTheme from "./views/DeleteTheme_admin";
+import SendReportref from "./views/Send_Report_Referee";
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
       <Route path="/UpdateTheme" element={<UpdateTheme/>} />
       <Route path="/DeleteTheme" element={<DeleteTheme/>} />
       <Route path="/admin" element={<AdminMainView/>} />
+      <Route path="/sendReportRef" element={<SendReportref/>} />
       
 
       {/* Redirect unmatched routes to Home */}
