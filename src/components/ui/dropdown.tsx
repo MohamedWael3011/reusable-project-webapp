@@ -1,23 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
 
 interface DropdownComponentProps {
     title: string;
-    options: string[];
+    options: { label: string; icon?: JSX.Element }[];
+    onOptionSelect?: (option: string) => void;
 }
 
-const DropdownComponent: React.FC<DropdownComponentProps> = ({ title, options }) => {
+const Dropdown: React.FC<DropdownComponentProps> = ({ title, options, onOptionSelect }) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const toggleDropdown = () => {
+        setIsOpen((x) => !x);
+    };
+
+    const handleOptionClick = (option: string) => {
+        if (onOptionSelect) {
+            onOptionSelect(option);
+        }
+        setIsOpen(false);
+    };
+
     return (
-        <div className="flex justify-center w-full lg:max-w-sm">
-            <select className="min-w-48 p-2.5 text-white-500 bg-primary border rounded-md shadow-sm outline-none focus:border-indigo-600">
-                <option className="bg-primary text-white shadow-none outline-none focus:bg-primary hover:bg-primary" disabled>{title}</option>
-                {options.map((option, index) => (
-                    <option className="bg-white text-primary shadow-none outline-none focus:bg-primary hover:bg-primary" key={index} value={option}>
-                        {option}
-                    </option>
-                ))}
-            </select>
+        <div className="w-72 font-medium h-48 relative">
+            <div
+                className="bg-primary w-full p-2 flex items-center justify-between rounded cursor-pointer text-white"
+                onClick={toggleDropdown}
+            >
+                {title}
+                <FontAwesomeIcon icon={faChevronDown} style={{ color: '#ffffff' }} />
+            </div>
+            {isOpen && (
+                <ul className="bg-white mt-2 shadow-lg rounded overflow-hidden absolute w-full z-10">
+                    {options.map((option, index) => (
+                        <li
+                            key={index}
+                            className="text-primary p-2 text-sm hover:bg-primary hover:text-white cursor-pointer flex items-center gap-2"
+                            onClick={() => handleOptionClick(option.label)}
+                        >
+                            {option.icon && <div>{option.icon}</div>}
+                            {option.label}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
-}
+};
 
-export default DropdownComponent;
+export default Dropdown;
