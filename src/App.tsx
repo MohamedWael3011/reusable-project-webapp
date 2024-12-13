@@ -26,6 +26,8 @@ const App = () => {
         <Route path="/AddTheme" element={<AddThemePage />} />
         <Route path="/UpdateTheme" element={<UpdateTheme />} />
         <Route path="/admin" element={<AdminMainView />} />
+        <Route path="/admin/addTheme" element={<AddThemePage />} />
+
         <Route path="/user" element={<UserMainView />} />
       </Route>
 

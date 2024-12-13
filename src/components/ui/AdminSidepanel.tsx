@@ -9,11 +9,14 @@ import {
 import LOGO from "../../assets/logo.png";
 import { useUser } from "../../hooks/useUser";
 import { Button } from "./button";
+import { useNavigate } from "react-router-dom";
 
 //import { useNavigate } from "react-router-dom";
 
 const AdminSidepanel: React.FC = () => {
   const { logout } = useUser();
+
+  const navigate = useNavigate();
 
   const dropdown1Title = "Manage Themes";
   const dropdown1Options = [
@@ -60,24 +63,21 @@ const AdminSidepanel: React.FC = () => {
           <span className="  text-primary text-xl text-center">Admin</span>
         </div>
         <div className="flex flex-col justify-center">
-          <div>
-            <DropdownComponent
-              title={dropdown1Title}
-              options={dropdown1Options}
-            />
-          </div>
-          <div>
-            <DropdownComponent
-              title={dropdown2Title}
-              options={dropdown2Options}
-            />
-          </div>
-          <div>
-            <DropdownComponent
-              title={dropdown3Title}
-              options={dropdown3Options}
-            />
-          </div>
+          <DropdownComponent
+            title={dropdown1Title}
+            options={dropdown1Options}
+            onOptionSelect={() => {
+              navigate("/admin/addtheme");
+            }}
+          />
+          <DropdownComponent
+            title={dropdown2Title}
+            options={dropdown2Options}
+          />
+          <DropdownComponent
+            title={dropdown3Title}
+            options={dropdown3Options}
+          />
           <Button
             className="w-full flex justify-center items-center -mt-10 h-10 text-white bg-green-500 rounded-lg z-10"
             onClick={logout}
