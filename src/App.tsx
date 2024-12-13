@@ -8,6 +8,7 @@ import UpdateTheme from "./views/UpdateTheme_admin";
 import { AdminMainView } from "./views/AdminMainView";
 import { UserMainView } from "./views/UserMainView";import ReportsUpload from "./views/ReportsUpload";
 import SubmitProposal from "./views/proposalsubmission";
+import UserDeleteView from "./views/UserDeleteView";
 
 
 const App = () => {
@@ -24,8 +25,7 @@ const App = () => {
       <Route path="/uploadreport" element={<ReportsUpload/>}/>
       <Route path="/submit" element={<SubmitProposal/>}/>
       <Route path="/user" element={<UserMainView />} />
-
-      {/* Redirect unmatched routes to Home */}
+      <Route path="/user-remove" element={<UserDeleteView/>}/>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
