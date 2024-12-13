@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 interface DropdownComponentProps {
     title: string;
     options: { label: string; icon?: JSX.Element }[];
     onOptionSelect?: (option: string) => void;
-    //onClick?: (option: string) => void;
+    onChange: (option: string) => void; // Add the onChange prop here
 }
 
-const Dropdown: React.FC<DropdownComponentProps> = ({ title, options, onOptionSelect }) => {
+const Dropdown: React.FC<DropdownComponentProps> = ({ title, options, onOptionSelect, onChange }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const toggleDropdown = () => {
@@ -21,7 +20,10 @@ const Dropdown: React.FC<DropdownComponentProps> = ({ title, options, onOptionSe
         if (onOptionSelect) {
             onOptionSelect(option);
         }
-        setIsOpen(false);
+        if (onChange) {
+            onChange(option);  // Trigger the onChange callback when an option is clicked
+        }
+        setIsOpen(false); // Close the dropdown after selecting an option
     };
 
     return (
@@ -39,7 +41,7 @@ const Dropdown: React.FC<DropdownComponentProps> = ({ title, options, onOptionSe
                         <li
                             key={index}
                             className="text-primary p-2 text-sm hover:bg-primary hover:text-white cursor-pointer flex items-center gap-2"
-                            onClick={() => handleOptionClick(option.label)}
+                            onClick={() => handleOptionClick(option.label)} // Pass the option label to the click handler
                         >
                             {option.icon && <div>{option.icon}</div>}
                             {option.label}
