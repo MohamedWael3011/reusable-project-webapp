@@ -24,7 +24,7 @@ export const Login = () => {
       if (userProfile.Message === "Authentication successful.") {
         setUser(userProfile); // Save user data in context
         setError(null); // Clear any errors
-        navigate("home");
+        navigate("/");
       } else {
         setError("Invalid email or password."); // Set error message
       }
