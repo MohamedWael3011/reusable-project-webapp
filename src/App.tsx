@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import UserMainView from "./views/UserMainView";
 import {Login} from "./views/Login"
 import {Signup} from "./views/Signup"
+import { AdminMainView } from "./views/AdminMainView";
 
 
 const App = () => {
@@ -13,7 +14,8 @@ const App = () => {
       <Route path="/" element={<UserMainView />} />
       <Route path="/signin" element={<Login/>} />
       <Route path="/signup" element={<Signup/>} />
-
+      <Route path="/admin" element={<AdminMainView/>} />
+      
 
       {/* Redirect unmatched routes to Home */}
       <Route path="*" element={<Navigate to="/" replace />} />
@@ -22,5 +24,4 @@ const App = () => {
 };
 
 export default App;
-
 
