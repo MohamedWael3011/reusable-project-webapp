@@ -6,8 +6,9 @@ import { HomeView } from "./views/HomeView";
 import AddThemePage from "./views/AddTheme_admin";
 import UpdateTheme from "./views/UpdateTheme_admin";
 import { AdminMainView } from "./views/AdminMainView";
-import { UserMainView } from "./views/UserMainView";import ReportsUpload from "./views/ReportsUpload";
-import SubmitProposal from "./views/proposalsubmission";
+import { UserMainView } from "./views/UserMainView";
+//import ReportsUpload from "./views/ReportsUpload";
+//import SubmitProposal from "./views/proposalsubmission";
 import DeleteTheme from "./views/DeleteTheme_admin";
 import SendReportref from "./views/Send_Report_Referee";
 
@@ -23,7 +24,9 @@ const App = () => {
       <Route path="/AddTheme" element={<AddThemePage/>} />
       <Route path="/UpdateTheme" element={<UpdateTheme/>} />
       <Route path="/admin" element={<AdminMainView/>} />
-      
+      <Route path="/deletetheme" element={<DeleteTheme/>} />
+      <Route path="/sendReportref" element={<SendReportref/>} />
+      <Route path="/usermainview" element={<UserMainView/>} />
 
       {/* Redirect unmatched routes to Home */}
       <Route path="*" element={<Navigate to="/" replace />} />
