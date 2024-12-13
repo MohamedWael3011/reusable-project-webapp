@@ -3,8 +3,8 @@ import React from "react";
 interface TableProps {
     title:string;
     columns: string[]; 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-     data: Record<string, any>[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: Record<string, any>[];
 }
   
 const TableAdmin: React.FC<TableProps> = ({ title ,columns, data }) => {

@@ -42,6 +42,49 @@ export const createAccount = async (
     return false;
   }
 };
+export interface UserProfile {
+  success: boolean;
+  fullname?: string;
+  id?: number;
+}
+
+export const logIn = async (
+  email: string,
+  password: string
+): Promise<UserProfile> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <LogIn xmlns="http://tempuri.org/">
+          <email>${email}</email>
+          <password>${password}</password>
+        </LogIn>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  headers.SOAPAction = "http://tempuri.org/LogIn";
+
+  try {
+    const { response } = await soapRequest({ url, headers, xml });
+    const parsedResponse = parser.parse(response.body);
+
+    const result = parsedResponse.Envelope.Body.LogInResponse.LogInResult;
+
+    if (result.success) {
+      return {
+        success: true,
+        fullname: result.fullname,
+        id: result.id,
+      };
+    } else {
+      return { success: false };
+    }
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return { success: false };
+  }
+};
 
 export const viewProjectTheme = async (): Promise<
   { themeId: number; name: string }[] | null
