@@ -8,10 +8,10 @@ import Calendar from "@/components/Calendar";
 
 const ReportsUpload: React.FC = () => 
 {
-     const [AcceptedSubmissions, setAcceptedSubmission] = useState('');
+      const [AcceptedSubmissions, setAcceptedSubmission] = useState('');
       const [ReportTitle, setReportTitle] = useState('');
       const [ReportContent, setReportContent] = useState('');
-       const [Date, setDate] = useState<string | null>(null);
+      const [Date, setDate] = useState<string | null>(null);
     
       const handleUpload = (e: React.FormEvent) => {
         e.preventDefault();
@@ -101,13 +101,12 @@ const ReportsUpload: React.FC = () =>
             <div className="flex justify-center space-x-48">
 
               <Button className="w-md mt-4" size={"lg"} type='submit'>
-                          Upload
-                         </Button>
+                Upload
+              </Button>
 
-                <Button  className="w-md mt-4 border border-blue-800 text-blue-800 bg-white hover:bg-[#033469] hover:text-white "
-                                                    size={"lg"} type='button'>
-                          Cancel
-                         </Button>         
+              <Button  className="w-md mt-4 border border-blue-800 text-blue-800 bg-white hover:bg-[#033469] hover:text-white " size={"lg"} type='button'>
+                Cancel
+              </Button>         
               
             </div>
 
