@@ -7,6 +7,7 @@ interface DropdownComponentProps {
     title: string;
     options: { label: string; icon?: JSX.Element }[];
     onOptionSelect?: (option: string) => void;
+    //onClick?: (option: string) => void;
 }
 
 const Dropdown: React.FC<DropdownComponentProps> = ({ title, options, onOptionSelect }) => {

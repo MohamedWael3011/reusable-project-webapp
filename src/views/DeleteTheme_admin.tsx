@@ -4,7 +4,7 @@ import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
 import AdminSidePanel from "../components/ui/AdminSidepanel";
 
-const UpdateTheme: React.FC = () => {
+const DeleteTheme: React.FC = () => {
     const [themID, setThemeId] = useState("");
     const [themeName, setThemeName] = useState("");
     const [duration, setDuration] = useState("");
@@ -15,14 +15,14 @@ const UpdateTheme: React.FC = () => {
         setDeadline(date.toDateString());
     };
 
-    const handleUpdate = () => {
+    const handleDelete = () => {
         // Logic for adding the theme
         console.log({ themID,themeName, duration, budget, deadline });
     };
 
     return (
         <div className="flex h-screen">
-            {/* Left Section: Side Menu */}
+           
             <div className="w-[510px] bg-gray-200">
                  <AdminSidePanel /> 
             </div>
@@ -32,7 +32,7 @@ const UpdateTheme: React.FC = () => {
                 <div className="w-full max-w-3xl flex space-x-8">
                     
                     <div className="flex-1 space-y-6">
-                        <h1 className="text-2xl text-[#033469] font-bold mb-6">Update Themes</h1>
+                        <h1 className="text-2xl text-[#033469] font-bold mb-6">Delete Themes</h1>
                         <div>
                             
                             <TextInput
@@ -77,8 +77,8 @@ const UpdateTheme: React.FC = () => {
                         </div>
 
             <div className="mt-6 flex space-x-4">
-                <Button onClick={handleUpdate} className="bg-[#033469] text-white">
-                    Update Theme
+                <Button onClick={handleDelete} className="bg-[#033469] text-white">
+                    Delete Theme
                 </Button>
                 <Button 
                     className="border border-[#033469] text-[#033469] bg-transparent hover:bg-[#033469] hover:text-white">
@@ -111,4 +111,4 @@ const UpdateTheme: React.FC = () => {
     );
 };
 
-export default UpdateTheme;
+export default DeleteTheme;

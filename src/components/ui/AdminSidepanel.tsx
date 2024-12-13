@@ -2,16 +2,19 @@ import DropdownComponent from "@/components/ui/dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faPaperPlane, faRecycle, faTrash, faUser } from '@fortawesome/free-solid-svg-icons'
 import LOGO from "../../assets/logo.png"
-
+//import { useNavigate } from "react-router-dom";
 
 
 const AdminSidepanel: React.FC = () => {
+  //const navigate = useNavigate();
 
     const dropdown1Title = "Manage Themes";
     const dropdown1Options = [
       {
         label: "Add Theme",
-        icon: <FontAwesomeIcon icon={faPaperPlane} />
+        icon: <FontAwesomeIcon icon={faPaperPlane} />,
+        //onclick: () => navigate("/AddTheme"),
+        //onOptionSelect: () => navigate("/AddTheme")
       },
       {
         label: "Update Theme",

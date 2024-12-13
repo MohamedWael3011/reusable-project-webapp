@@ -8,6 +8,7 @@ import { HomeView } from "./views/HomeView";
 import AddThemePage from "./views/AddTheme_admin";
 import UpdateTheme from "./views/UpdateTheme_admin";
 import { AdminMainView } from "./views/AdminMainView";
+import DeleteTheme from "./views/DeleteTheme_admin";
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
       <Route path="/HomeView" element={<HomeView/>} />
       <Route path="/AddTheme" element={<AddThemePage/>} />
       <Route path="/UpdateTheme" element={<UpdateTheme/>} />
+      <Route path="/DeleteTheme" element={<DeleteTheme/>} />
       <Route path="/admin" element={<AdminMainView/>} />
       
 

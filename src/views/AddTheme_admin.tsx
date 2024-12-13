@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Calendar from "../components/Calendar"; // Use the Calendar component
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
+import AdminSidePanel from "../components/ui/AdminSidepanel";
 
 const AddThemePage: React.FC = () => {
     const [themeName, setThemeName] = useState("");
@@ -21,9 +22,9 @@ const AddThemePage: React.FC = () => {
 
     return (
         <div className="flex h-screen">
-            {/* Left Section: Side Menu */}
+        
             <div className="w-[510px] bg-gray-200">
-                {/* <SideMenu /> */}
+            <AdminSidePanel /> 
             </div>
 
         
