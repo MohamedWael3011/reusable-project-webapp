@@ -13,7 +13,9 @@ import { UserMainView } from "./views/UserMainView";
 // import DeleteTheme from "./views/DeleteTheme_admin";
 // import SendReportref from "./views/Send_Report_Referee";
 import RememberRoute from "./route/Remember.route";
-
+// import Referee from "./views/Referee";
+// import DetailedProposalView from "./views/detProp";
+// import DetailedReportsView from "./views/detRep";
 
 
 const App = () => {
