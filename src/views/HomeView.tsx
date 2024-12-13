@@ -1,8 +1,23 @@
 import { Button } from "../components/ui/button";
 import LOGO from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../hooks/useUser";
+import { useEffect } from "react";
 export const HomeView = () => {
+  const { user } = useUser();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    } else if (user?.Role === "Admin") {
+      navigate("/admin");
+    } else if (user?.Role === "User") {
+      navigate("/user");
+    } else {
+      navigate("");
+    }
+  }, [navigate, user]);
   return (
     <div className="bg-background h-screen grid grid-cols-2">
       <div className="flex flex-col justify-center items-center gap-5">
@@ -18,9 +33,6 @@ export const HomeView = () => {
             Sign up
           </Button>
         </div>
-        <Button variant={"link"} size={"lg"}>
-          Log in as Admin
-        </Button>
       </div>
     </div>
   );
