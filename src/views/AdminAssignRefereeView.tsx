@@ -24,7 +24,7 @@ const AvailableSubmissionscolumns = ["ID", "Name", "Deadline", "Duration", "Budg
 
 
 
-export const AdminAssignRefereeView = () => {
+ const AdminAssignRefereeView = () => {
   const [RefereeId, setRefereeId] = useState<string>('');
   const [Theme, setTheme] = useState<string>('');
 
@@ -68,3 +68,4 @@ export const AdminAssignRefereeView = () => {
 
   );
 };
+export default AdminAssignRefereeView;
