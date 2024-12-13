@@ -1,13 +1,13 @@
 import { Navigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
-// import { HomeView } from "./views/HomeView";
-// import UserMainView from "./components/ui/UserSidepanel";
-import {Login} from "./views/Login"
-import {Signup} from "./views/Signup"
+import { Login } from "./views/Login";
+import { Signup } from "./views/Signup";
 import { HomeView } from "./views/HomeView";
 import AddThemePage from "./views/AddTheme_admin";
 import UpdateTheme from "./views/UpdateTheme_admin";
 import { AdminMainView } from "./views/AdminMainView";
+import { UserMainView } from "./views/UserMainView";import ReportsUpload from "./views/ReportsUpload";
+import SubmitProposal from "./views/proposalsubmission";
 import DeleteTheme from "./views/DeleteTheme_admin";
 import SendReportref from "./views/Send_Report_Referee";
 
@@ -22,9 +22,7 @@ const App = () => {
       <Route path="/HomeView" element={<HomeView/>} />
       <Route path="/AddTheme" element={<AddThemePage/>} />
       <Route path="/UpdateTheme" element={<UpdateTheme/>} />
-      <Route path="/DeleteTheme" element={<DeleteTheme/>} />
       <Route path="/admin" element={<AdminMainView/>} />
-      <Route path="/sendReportRef" element={<SendReportref/>} />
       
 
       {/* Redirect unmatched routes to Home */}
@@ -34,4 +32,3 @@ const App = () => {
 };
 
 export default App;
-
