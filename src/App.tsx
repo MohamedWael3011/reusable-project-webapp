@@ -7,6 +7,11 @@ import AddThemePage from "./views/AddTheme_admin";
 import UpdateTheme from "./views/UpdateTheme_admin";
 import { AdminMainView } from "./views/AdminMainView";
 import { UserMainView } from "./views/UserMainView";
+import ReportsUpload from "./views/ReportsUpload";
+import SubmitProposal from "./views/proposalsubmission";
+import DeleteTheme from "./views/DeleteTheme_admin";
+import SendReportref from "./views/Send_Report_Referee";
+
 import RememberRoute from "./route/Remember.route";
 
 const App = () => {
