@@ -2,15 +2,26 @@ import DropdownComponent from "@/components/ui/dropdown";
 import LOGO from "../assets/logo.png";
 import RefereeIcon from "../assets/referee-icon.png";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
 
 
 
 const  DetailedProposalView = () => {
   const [selectedScreen, setSelectedScreen] = useState("Proposals"); // Default screen
-  const dropdownTitle = "Referee name"; // Title for dropdown
+  // const [proposalStatus, setProposalStatus] = useState("");
+  // const [feedback, setFeedback] = useState(""); 
+
+  const dropdownTitle = "Review"; // Title for dropdown
   const dropdownOptions = [
-    "Review Proposal",
-    "Review Reports",
+    {
+      label: "Review Proposal",
+      icon: <FontAwesomeIcon icon={faPaperPlane} />,
+    },
+    {
+      label: "Review Report",
+      icon: <FontAwesomeIcon icon={faRecycle} />,
+    },
   ];
 
   const proposalDetails = {
@@ -21,25 +32,23 @@ const  DetailedProposalView = () => {
   };
 
 
-  const handleDropdownChange = (option: string) => {
-    if (option === "Review Proposal") {
-      setSelectedScreen("Proposals");
-    } else if (option === "Review Reports") {
-      setSelectedScreen("Reports");
-    }
+  const handleDropdownChange = (option:string) => {
+    setSelectedScreen(option === "Review Proposal" ? "Proposals" : "Reports");
   };
+  
+
+  
   return (
-    <div className="bg-background h-screen grid lg:grid-cols-[20%_auto]">
-      {/* Sidebar Section */}
+    <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
+     {/* Sidebar Section */}
       <div className="flex flex-col items-center bg-[#CEE0F3]">
         <img src={LOGO} className="w-48 py-10" alt="Logo" />
-                {/* Referee Section */}
-                <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <img src={RefereeIcon} className="w-30 h-20" alt="Referee Icon" />
           <span className="font-semibold text-1xl font-bold text-[#003366] mb-5">Referee Name</span>
         </div>
 
-        <div className="flex flex-col justify-between h-62 mb-40">
+        <div>
         <DropdownComponent
             title={dropdownTitle}
             options={dropdownOptions}
@@ -61,7 +70,7 @@ const  DetailedProposalView = () => {
         <div className="flex space-x-4 w-full justify-between pr-40 pb-5 pl-5">
   <p className="text-2xl font-bold text-[#003366]">{`Proposal ${proposalDetails.id}`}</p>
   <p className="text-2xl font-bold text-[#003366]">{proposalDetails.theme}</p>
-  <p className="text-2xl font-bold text-[#003366]">{`Proposal ${proposalDetails.title}`}</p>
+  <p className="text-2xl font-bold text-[#003366]">{`${proposalDetails.title}`}</p>
         </div>
   {/* Proposal Details Section */}
         <div className="bg-[#CEE0F3] w-full max-w-4xl p-6 rounded-xl shadow-md mb-10">
