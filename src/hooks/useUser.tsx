@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { UserValidationResponse } from "../apis/auth.api";
+import { useNavigate } from "react-router-dom";
 
 // User Context Setup
 interface UserContextProps {
@@ -13,6 +14,8 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState<UserValidationResponse | null>(() =>
     JSON.parse(sessionStorage.getItem("user") || "null")
   );
@@ -27,6 +30,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = () => {
     setUser(null);
+    navigate("/home");
   };
 
   return (
