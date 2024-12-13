@@ -24,7 +24,7 @@ const Dropdown: React.FC<DropdownComponentProps> = ({ title, options, onOptionSe
     };
 
     return (
-        <div className="w-72 font-medium h-48 relative">
+        <div className="w-72 font-medium h-44 relative">
             <div
                 className="bg-primary w-full p-2 flex items-center justify-between rounded cursor-pointer text-white"
                 onClick={toggleDropdown}
