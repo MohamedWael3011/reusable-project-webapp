@@ -16,15 +16,11 @@ export const AdminMainView = () => {
   return (
     <div className='flex grid grid-cols-12' >
       <AdminSidepanel/>
-
       <div className='col-span-9 flex items-start justify-center mt-44'>
-
         <TableAdmin title="Available Project Themes"columns={columns} data={data}/>
       </div>
 
     </div>
-
-
 
   );
 };
