@@ -67,12 +67,13 @@ const AdminSidepanel: React.FC = () => {
             title={dropdown1Title}
             options={dropdown1Options}
             onOptionSelect={() => {
-              navigate("/admin/addtheme");
+              navigate("/admin/UpdateTheme");
             }}
           />
           <DropdownComponent
             title={dropdown2Title}
             options={dropdown2Options}
+            onOptionSelect={()=>{ navigate("/admin/AdminAssignRefereeView") }}
           />
           <DropdownComponent
             title={dropdown3Title}

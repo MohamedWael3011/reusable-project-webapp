@@ -28,9 +28,9 @@ const App = () => {
       <Route element={<RememberRoute />}>
         <Route path="/home" element={<HomeView />} />
         <Route path="/AddTheme" element={<AddThemePage />} />
-        <Route path="/UpdateTheme" element={<UpdateTheme />} />
         <Route path="/admin" element={<AdminMainView />} />
         <Route path="/admin/addTheme" element={<AddThemePage />} />
+        <Route path="/admin/UpdateTheme" element={<UpdateTheme />}/>
         <Route path="/admin/AdminAssignRefereeView" element={<AdminAssignRefereeView />} />
         <Route path="/user" element={<UserMainView />} />
       </Route>

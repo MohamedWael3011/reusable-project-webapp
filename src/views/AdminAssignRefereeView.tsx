@@ -3,7 +3,6 @@ import AdminSidepanel from '@/components/ui/AdminSidepanel';
 import TextInput from '@/components/ui/TextInput';
 import { useState } from 'react';
 import { Button } from "../components/ui/button";
-import ComboBox from '@/components/ui/combobox';
 
 
 const AvailableRefereescolumns = ["ID", "RefereeName"];
@@ -21,12 +20,12 @@ const AvailableSubmissionsData = [
   ];
 
 const AvailableSubmissionscolumns = ["ID", "Name", "Deadline", "Duration", "Budget"];
-
+  
 
 
  const AdminAssignRefereeView = () => {
   const [RefereeId, setRefereeId] = useState<string>('');
-  const [Theme, setTheme] = useState<string>('');
+  const [ProjectId, setProjectId] = useState<string>('');
 
 
 
@@ -39,16 +38,15 @@ const AvailableSubmissionscolumns = ["ID", "Name", "Deadline", "Duration", "Budg
             
             <div className=' grid grid-cols-12 gap-36'>
                 <div className='col-span-4'>
-                    <TextInput  required label='Referee Id' placeholder="Enter Id"
+                    <TextInput  required label='Referee Id' placeholder="Enter Referee Id"
                         value={RefereeId} onChange={(e)=>{ setRefereeId(e.target.value)}}/>
                     <Button className=" mt-4" size={"lg"} >
                         Assign
                     </Button>
                 </div>
                 <div className='col-span-4'>
-                  <ComboBox label="Project Theme" value={Theme} onChange={(e) => setTheme(e.target.value)} 
-                    options={["Theme 1","Theme 2","Theme 3","Theme 4"]} required={true} placeholder="Choose Themet"/>
-
+                    <TextInput  required label='Project Id' placeholder="Enter Project Id"
+                        value={ProjectId} onChange={(e)=>{ setProjectId(e.target.value)}}/>
                     <Button className=" mt-4 bg-white text-primary border border-primary hover:bg-slate-100 " size={"lg"} >
                         Unassign
                     </Button>
@@ -57,7 +55,7 @@ const AvailableSubmissionscolumns = ["ID", "Name", "Deadline", "Duration", "Budg
 
             <div className='tables grid grid-cols-12 gap-4'>    
               <div className="col-span-4">
-                <TableAdmin title="Available Submissions" columns={AvailableRefereescolumns} data={AvailableRefereesData} />
+                <TableAdmin title="Available Referees" columns={AvailableRefereescolumns} data={AvailableRefereesData} />
               </div>
               <div className="col-span-8">
                 <TableAdmin title="Available Submissions" columns={AvailableSubmissionscolumns} data={AvailableSubmissionsData} />
