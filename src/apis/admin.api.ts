@@ -111,17 +111,14 @@ export const deleteTheme = async (themeId: number): Promise<boolean> => {
   }
 };
 
-export const assignRefereeToProject = async (
-  projectId: number,
-  refereeId: number
-): Promise<boolean> => {
+export const assignReferee = async (refereeId: number, submissionId: number): Promise<string> => {
   const xml = `
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       <soap:Body>
-        <AssignRefereeToProject xmlns="http://tempuri.org/">
-          <projectId>${projectId}</projectId>
+        <AssignReferee xmlns="http://tempuri.org/">
           <refereeId>${refereeId}</refereeId>
-        </AssignRefereeToProject>
+          <submissionId>${submissionId}</submissionId>
+        </AssignReferee>
       </soap:Body>
     </soap:Envelope>
   `;
@@ -129,18 +126,44 @@ export const assignRefereeToProject = async (
   try {
     const { response } = await soapRequest({
       url,
-      headers: {
-        ...headers,
-        SOAPAction: `${headers.SOAPAction}AssignRefereeToProject`,
-      },
+      headers: { ...headers, SOAPAction: `${headers.SOAPAction}AssignReferee` },
       xml,
     });
     const parsedResponse = parser.parse(response.body);
-    const result = parsedResponse.Envelope.Body.AssignRefereeToProjectResponse
-      .AssignRefereeToProjectResult as boolean;
-    return result;
+    return parsedResponse.Envelope.Body.AssignRefereeResponse.AssignRefereeResult as string;
   } catch (error) {
     console.error("SOAP Request Error:", error);
-    return false;
+    return `Error: ${error}`;
   }
 };
+
+export const unassignReferee = async (refereeId: number, submissionId: number): Promise<string> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <UnassignReferee xmlns="http://tempuri.org/">
+          <refereeId>${refereeId}</refereeId>
+          <submissionId>${submissionId}</submissionId>
+        </UnassignReferee>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  try {
+    const { response } = await soapRequest({
+      url,
+      headers: { ...headers, SOAPAction: `${headers.SOAPAction}UnassignReferee` },
+      xml,
+    });
+    const parsedResponse = parser.parse(response.body);
+    return parsedResponse.Envelope.Body.UnassignRefereeResponse.UnassignRefereeResult as string;
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return `Error: ${error}`;
+  }
+};
+
+
+
+
+
