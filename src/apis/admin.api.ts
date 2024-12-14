@@ -165,5 +165,55 @@ export const unassignReferee = async (refereeId: number, submissionId: number): 
 
 
 
+// // The API function to fetch themes
 
 
+
+
+// // Define the type for the Theme
+// export interface Theme {
+//   id: number;
+//   name: string;
+//   deadline: string;
+//   duration: string;
+//   budget: string;
+// }
+
+// // The API function to fetch themes
+// export const viewProjectThemes = async (): Promise<Theme[]> => {
+//   const xml = `
+//     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+//       <soap:Body>
+//         <ViewProjectTheme xmlns="http://tempuri.org/" />
+//       </soap:Body>
+//     </soap:Envelope>
+//   `;
+
+//   try {
+//     const { response } = await soapRequest({
+//       url: "http://your-service-endpoint", // Replace with your actual SOAP service endpoint
+//       headers: {
+//         "Content-Type": "text/xml;charset=UTF-8",
+//         SOAPAction: "http://tempuri.org/ViewProjectTheme", // Replace with actual SOAPAction
+//       },
+//       xml,
+//     });
+
+//     const parsedResponse = parser.parse(response.body);
+//     const rows = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.Table;
+
+//     // Ensure rows are always returned as an array
+//     const themes = Array.isArray(rows) ? rows : [rows];
+
+//     return themes.map((theme) => ({
+//       id: theme.themeId,
+//       name: theme.name,
+//       deadline: theme.deadline || "N/A",
+//       duration: theme.duration || "N/A",
+//       budget: theme.budget || "N/A",
+//     }));
+//   } catch (error) {
+//     console.error("SOAP Request Error:", error);
+//     return [];
+//   }
+// };
