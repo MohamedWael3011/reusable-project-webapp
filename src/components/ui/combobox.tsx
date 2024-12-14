@@ -11,7 +11,7 @@ interface ComboBoxProps {
 
 const ComboBox: React.FC<ComboBoxProps> = ({ label, value, onChange, options, required, placeholder }) => {
   return (
-    <div className="flex-1 rounded-xl">
+    <div className="flex-1  rounded-xl">
       <label className="block text-primary text-sm font-medium mb-1">{label}</label>
       <select
         value={value}

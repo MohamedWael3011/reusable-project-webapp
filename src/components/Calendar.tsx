@@ -1,16 +1,12 @@
-// import { Slot } from "@radix-ui/react-slot";
-// import { cva, type VariantProps } from "class-variance-authority";
-// import { cn } from "@/lib/utils";
 import React, { useState } from 'react';
 import "./ui/Calendar.css";
 
-
 interface CalendarProps {
     onDateSelect: (date: Date) => void;
-    className?: string; // Add this line to allow className to be passed in
+    className?: string; // Allow additional classes to be passed in
 }
 
-const Calendar: React.FC<CalendarProps> = ({ onDateSelect , className }) => {
+const Calendar: React.FC<CalendarProps> = ({ onDateSelect, className }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -19,29 +15,50 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect , className }) => {
     const generateCalendar = () => {
         const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-        const startDay = startOfMonth.getDay() === 0 ? 7 : startOfMonth.getDay();
+        const startDay = startOfMonth.getDay() === 0 ? 7 : startOfMonth.getDay(); // Adjust to start from Monday
         const daysInMonth = endOfMonth.getDate();
+
+        // Calculate previous month's days
+        const prevMonthEnd = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+        const daysInPrevMonth = prevMonthEnd.getDate();
 
         const calendarDays: JSX.Element[] = [];
 
-        for (let i = 1 - (startDay - 1); i <= daysInMonth; i++) {
-            if (i < 1) {
-                calendarDays.push(<div className="empty" key={`empty-${i}`}></div>);
-            } else {
-                calendarDays.push(
-                    <div
-                        key={i}
-                        className={`day ${selectedDate?.getDate() === i ? 'selected' : ''}`}
-                        onClick={() => {
-                            const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
-                            setSelectedDate(selected);
-                            onDateSelect?.(selected); // Trigger the callback if provided
-                        }}
-                    >
-                        {i}
-                    </div>
-                );
-            }
+        // Add days from the previous month
+        for (let i = startDay - 2; i >= 0; i--) {
+            const day = daysInPrevMonth - i;
+            calendarDays.push(
+                <div className="day prev-month" key={`prev-${day}`}>{day}</div>
+            );
+        }
+
+        // Add days for the current month
+        for (let i = 1; i <= daysInMonth; i++) {
+            calendarDays.push(
+                <div
+                    key={i}
+                    className={`day ${
+                        selectedDate?.getDate() === i && selectedDate?.getMonth() === currentDate.getMonth()
+                            ? 'selected'
+                            : ''
+                    }`}
+                    onClick={() => {
+                        const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+                        setSelectedDate(selected);
+                        onDateSelect?.(selected); // Trigger the callback if provided
+                    }}
+                >
+                    {i}
+                </div>
+            );
+        }
+
+        // Fill remaining spaces with next month's days
+        const remainingDays = (7 - (calendarDays.length % 7)) % 7;
+        for (let i = 1; i <= remainingDays; i++) {
+            calendarDays.push(
+                <div className="day next-month" key={`next-${i}`}>{i}</div>
+            );
         }
 
         return calendarDays;
@@ -56,8 +73,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect , className }) => {
     };
 
     return (
-        <div className={ `calendar-component ${className}`}>
-
+        <div className={`calendar-component ${className}`}>
             <div className="calendar-header">
                 <button onClick={handlePreviousMonth}>&lt;</button>
                 <div className="month-label">
