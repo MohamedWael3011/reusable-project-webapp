@@ -6,39 +6,36 @@ import {
   faPaperPlane,
   faUser,
   faRecycle,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { faDownLeftAndUpRightToCenter } from "@fortawesome/free-solid-svg-icons/faDownLeftAndUpRightToCenter";
 import { useUser } from "../../hooks/useUser";
 import { Button } from "./button";
+import { useNavigate } from "react-router-dom";
 
 const UserSidepanel: React.FC = () => {
   const { logout } = useUser();
   const dropdown1Title = "Proposals";
   const dropdown1Options = [
     {
-      label: "Submit",
+      label: "Submit Proposal",
       icon: <FontAwesomeIcon icon={faPaperPlane} />,
     },
     {
-      label: "Update",
+      label: "Update Proposal",
       icon: <FontAwesomeIcon icon={faRecycle} />,
     },
     {
-      label: "Delete",
-      icon: <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />,
+      label: "Delete Proposal",
+      icon: <FontAwesomeIcon icon={faTrash} />,
     },
   ];
 
   const dropdown2Title = "Reports";
   const dropdown2Options = [
     {
-      label: "ay klam Dropdown",
+      label: "Submit Report",
       icon: <FontAwesomeIcon icon={faPaperPlane} />,
-    },
-    {
-      label: "sdsa",
-      icon: <FontAwesomeIcon icon={faRecycle} />,
-    },
+    }
   ];
 
   const dropdown3Title = "Notifications";
@@ -48,6 +45,31 @@ const UserSidepanel: React.FC = () => {
       icon: <FontAwesomeIcon icon={faEnvelope} />,
     },
   ];
+
+  const navigate = useNavigate();
+
+  const handleManageSelect = (option: string) => {
+    switch (option) {
+      case "Submit Proposal":
+        navigate("/user/submitproposal");
+        break;
+      case "Update Proposal":
+        navigate("/user/updateproposal");
+        break;
+      case "Delete Proposal":
+        navigate("/user/deleteproposal");
+        break;
+      case "Submit Report":
+        navigate("/user/submitreport");
+        break;
+      case "Email":
+        navigate("/user");
+        break;
+      default:
+        break;
+    }
+  };
+
 
   return (
     <div className="bg-background h-fit w-full col-span-3 overflow-hidden">
@@ -63,13 +85,22 @@ const UserSidepanel: React.FC = () => {
         </div>
         <div className="flex flex-col justify-center ">
           <div>
-            <Dropdown title={dropdown1Title} options={dropdown1Options} />
+            <Dropdown title={dropdown1Title}
+              options={dropdown1Options}
+              onOptionSelect={handleManageSelect}
+              onChange={handleManageSelect} />
           </div>
           <div>
-            <Dropdown title={dropdown2Title} options={dropdown2Options} />
+            <Dropdown title={dropdown2Title}
+             options={dropdown2Options} 
+             onOptionSelect={handleManageSelect}
+             onChange={handleManageSelect} />
           </div>
           <div>
-            <Dropdown title={dropdown3Title} options={dropdown3Options} />
+            <Dropdown title={dropdown3Title} 
+            options={dropdown3Options}
+            onOptionSelect={handleManageSelect}
+            onChange={handleManageSelect} />
           </div>
           <Button
             className="w-full flex justify-center items-center -mt-10 h-10 text-white bg-green-500 rounded-lg z-10"

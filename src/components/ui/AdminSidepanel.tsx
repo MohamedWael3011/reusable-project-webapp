@@ -18,6 +18,29 @@ const AdminSidepanel: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const handleManageSelect = (option: string) => {
+    switch (option) {
+      case "Add Theme":
+        navigate("/admin/addtheme");
+        break;
+      case "Update Theme":
+        navigate("/admin/updatetheme");
+        break;
+      case "Delete Theme":
+        navigate("/admin/deletetheme");
+        break;
+        case "Assign Referee":
+        navigate("/admin/assignreferee");
+        break;
+      case "Final Reports":
+        navigate("/admin/sendfinalreports");
+        break;
+      default:
+        break;
+    }
+  };
+
+
   const dropdown1Title = "Manage Themes";
   const dropdown1Options = [
     {
@@ -66,17 +89,20 @@ const AdminSidepanel: React.FC = () => {
           <DropdownComponent
             title={dropdown1Title}
             options={dropdown1Options}
-            onOptionSelect={() => {
-              navigate("/admin/addtheme");
-            }}
+            onOptionSelect={handleManageSelect}
+            onChange={handleManageSelect}
           />
           <DropdownComponent
             title={dropdown2Title}
             options={dropdown2Options}
+            onOptionSelect={handleManageSelect}
+            onChange={handleManageSelect}
           />
           <DropdownComponent
             title={dropdown3Title}
             options={dropdown3Options}
+            onOptionSelect={handleManageSelect}
+            onChange={handleManageSelect}
           />
           <Button
             className="w-full flex justify-center items-center -mt-10 h-10 text-white bg-green-500 rounded-lg z-10"
