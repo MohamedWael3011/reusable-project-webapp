@@ -15,8 +15,8 @@ const AddThemePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleDateSelect = (date: Date) => {
-    setDeadline(date.toISOString().split("T")[0]); // Format date as YYYY-MM-DD
-};
+    setDeadline(date.toISOString().split("T")[0]); 
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,7 +108,7 @@ const AddThemePage: React.FC = () => {
                 >
                   {loading ? "Adding..." : "Add Theme"}
                 </Button>
-                <Button className="border border-[#033469] text-[#033469] bg-transparent hover:bg-[#033469] hover:text-white" >
+                <Button className="border border-[#033469] text-[#033469] bg-transparent hover:bg-[#033469] hover:text-white">
                   View All Themes
                 </Button>
               </div>

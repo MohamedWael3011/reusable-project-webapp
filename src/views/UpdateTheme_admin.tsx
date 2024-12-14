@@ -39,7 +39,7 @@ const UpdateTheme: React.FC = () => {
             );
 
             if (result) {
-                setMessage("Theme updated successfully.");
+                setMessage(`Theme with Id ${themeID} updated successfully.`);
                 
                 setThemeId("");
                 setThemeName("");

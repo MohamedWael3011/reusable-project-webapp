@@ -1,109 +1,57 @@
-import React, { useState } from 'react';
-import Calendar from "../components/Calendar"; // Use the Calendar component
+import React, { useState, useCallback } from 'react';
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
 import AdminSidePanel from "../components/ui/AdminSidepanel";
+import { deleteTheme } from "../../src/apis/admin.api";
 
 const DeleteTheme: React.FC = () => {
     const [themID, setThemeId] = useState("");
-    const [themeName, setThemeName] = useState("");
-    const [duration, setDuration] = useState("");
-    const [budget, setBudget] = useState("");
-    const [deadline, setDeadline] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState<string | null>(null);
 
-    const handleDate = (date: Date) => {
-        setDeadline(date.toDateString());
-    };
+    const handleDelete = useCallback(async () => {
+        if (!themID) {
+            setMessage("Theme ID is required to delete a theme.");
+            return;
+        }
 
-    const handleDelete = () => {
-        // Logic for adding the theme
-        console.log({ themID,themeName, duration, budget, deadline });
-    };
+        setLoading(true);
+        try {
+            const result = await deleteTheme(Number(themID));
+            setMessage(result ? `Theme with Id ${themID} deleted successfully.` : "Failed to delete theme. Please try again.");
+            if (result) setThemeId(""); // Reset theme ID only if delete was successful
+        } catch (error) {
+            console.error("Error deleting theme:", error);
+            setMessage("An error occurred while deleting the theme.");
+        } finally {
+            setLoading(false);
+        }
+    }, [themID]); 
 
     return (
         <div className="flex h-screen">
-           
             <div className="w-[510px] bg-gray-200">
-                 <AdminSidePanel /> 
+                <AdminSidePanel />
             </div>
-
-        
             <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">
                 <div className="w-full max-w-3xl flex space-x-8">
-                    
                     <div className="flex-1 space-y-6">
-                        <h1 className="text-2xl text-[#033469] font-bold mb-6">Delete Themes</h1>
-                        <div>
-                            
-                            <TextInput
-                                value={themeName}
-                                onChange={(e) => setThemeId(e.target.value)}
-                                placeholder="Enter Theme ID"
-                                label="Theme ID"
-                                required
-                            />
-                        </div>
-                        <div>
-                            
-                            <TextInput
-                                value={themeName}
-                                onChange={(e) => setThemeName(e.target.value)}
-                                placeholder="Enter Theme Name"
-                                label="Theme Name"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                         
-                            <TextInput
-                                value={duration}
-                                onChange={(e) => setDuration(e.target.value)}
-                                placeholder="Enter Theme Duration"
-                                label="Duration"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <TextInput
-                                //className="bg-[#CEE0F3]"
-                                value={budget}
-                                onChange={(e) => setBudget(e.target.value)}
-                                placeholder="Enter Theme Budget"
-                                label="Budget"
-                                required
-                            />
-                        </div>
-
-            <div className="mt-6 flex space-x-4">
-                <Button onClick={handleDelete} className="bg-[#033469] text-white">
-                    Delete Theme
-                </Button>
-                <Button 
-                    className="border border-[#033469] text-[#033469] bg-transparent hover:bg-[#033469] hover:text-white">
-                    View All Themes
-                </Button>
-            </div>
-                    </div>
-
-                    
-                    <div className="flex-1 space-y-2">
-                        <div className=' m-14'>
-                           
-                            <TextInput
-                                value={deadline || ""}
-                                onChange={(e) => e.target.blur()} // Disable manual input
-                                placeholder="Select Theme Deadline"
-                                label="Deadline"
-                                required
-                            />
-                        </div>
-
-                        <div className="mt-4">
-                            <Calendar onDateSelect={handleDate} className="w-full bg-[#CEE0F3] rounded-xl p-4"/>
-                        </div>
-                      
+                        <h1 className="text-2xl text-[#033469] font-bold mb-6">Delete Theme</h1>
+                        <TextInput
+                            value={themID}
+                            onChange={(e) => setThemeId(e.target.value)}
+                            placeholder="Enter Theme ID"
+                            label="Theme ID"
+                            required
+                        />
+                        <Button onClick={handleDelete} className="bg-[#033469] text-white">
+                            {loading ? "Deleting..." : "Delete Theme"}
+                        </Button>
+                        {message && (
+                            <p className={`mt-4 ${message.includes("successfully") ? "text-primary" : "text-red-600"}`}>
+                                {message}
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

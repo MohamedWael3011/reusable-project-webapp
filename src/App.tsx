@@ -8,6 +8,7 @@ import UpdateTheme from "./views/UpdateTheme_admin";
 import { AdminMainView } from "./views/AdminMainView";
 import AdminAssignRefereeView from "./views/AdminAssignRefereeView"
 import { UserMainView } from "./views/UserMainView";
+import DeleteTheme from "./views/DeleteTheme_admin";
 // import ReportsUpload from "./views/ReportsUpload";
 // import SubmitProposal from "./views/proposalsubmission";
 // import DeleteTheme from "./views/DeleteTheme_admin";
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/admin" element={<AdminMainView />} />
         <Route path="/admin/addTheme" element={<AddThemePage />} />
         <Route path="/admin/UpdateTheme" element={<UpdateTheme />}/>
+        <Route path="/admin/DeleteTheme" element={<DeleteTheme />}/>
         <Route path="/admin/AdminAssignRefereeView" element={<AdminAssignRefereeView />} />
         <Route path="/user" element={<UserMainView />} />
       </Route>
