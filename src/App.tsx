@@ -13,11 +13,15 @@ import DeleteTheme from "./views/DeleteTheme_admin";
 // import SubmitProposal from "./views/proposalsubmission";
 // import DeleteTheme from "./views/DeleteTheme_admin";
 // import SendReportref from "./views/Send_Report_Referee";
+import SendReportref from "./views/Send_Report_Referee";
 import RememberRoute from "./route/Remember.route";
 // import Referee from "./views/Referee";
 // import DetailedProposalView from "./views/detProp";
 // import DetailedReportsView from "./views/detRep";
 import UpdateProposal from "./views/UpdateProposal";
+import UserDeleteView from "./views/UserDeleteView";
+import SubmitProposal from "./views/proposalsubmission";
+import ReportsUpload from "./views/ReportsUpload";
 
 const App = () => {
   return (
@@ -33,11 +37,14 @@ const App = () => {
         <Route path="/admin/addTheme" element={<AddThemePage />} />
         <Route path="/admin/UpdateTheme" element={<UpdateTheme />}/>
         <Route path="/admin/DeleteTheme" element={<DeleteTheme />}/>
-        <Route path="/admin/AdminAssignRefereeView" element={<AdminAssignRefereeView />} />
+        <Route path="/admin/assignreferee" element={<AdminAssignRefereeView />} />
+        <Route path="/admin/sendfinalreports" element={<SendReportref/>} />
         <Route path="/user" element={<UserMainView />} />
+        <Route path="/user/updateproposal" element={<UpdateProposal/>} />
+      <Route path="/user/deleteproposal" element={<UserDeleteView/>} /> 
+      <Route path="/user/submitproposal" element={<SubmitProposal/>} />
+      <Route path="/user/submitreport" element={<ReportsUpload/>} />
       </Route>
-      <Route path="/updateproposal" element={<UpdateProposal/>} /> 
-
       {/* Redirect unmatched routes to Home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

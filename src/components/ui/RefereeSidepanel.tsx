@@ -2,12 +2,13 @@ import DropdownComponent from "@/components/ui/dropdown";
 import LOGO from "../../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRecycle,faUser } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from "react-router-dom";
 
 const RefereeSidepanel: React.FC = () => {
     const dropdown1Title = "Review";
     const dropdown1Options = [
       {
-        label: "Review Prposal",
+        label: "Review Proposal",
         icon: <FontAwesomeIcon icon={faPaperPlane} />
       },
       {
@@ -16,7 +17,21 @@ const RefereeSidepanel: React.FC = () => {
       }
     ];
 
-  
+  const navigate = useNavigate();
+
+  const handleManageSelect = (option: string) => {
+    switch (option) {
+      case "Review Proposal":
+        navigate("/user/submitproposal");
+        break;
+      case "Review Report":
+        navigate("/user/updateproposal");
+        break;
+      default:
+        break;
+    }
+  };
+
   
     return (
       <div className="bg-background h-screen overflow-hidden w-full">
@@ -28,7 +43,11 @@ const RefereeSidepanel: React.FC = () => {
           </div>
           <div className="flex flex-col justify-center gap-0 ">
             <div>
-              <DropdownComponent title={dropdown1Title} options={dropdown1Options} />
+              <DropdownComponent 
+              title={dropdown1Title} 
+              options={dropdown1Options} 
+              onOptionSelect={handleManageSelect}
+              onChange={handleManageSelect} />
             </div>
           </div>
         </div>
