@@ -3,7 +3,7 @@ import AdminSidepanel from '@/components/ui/AdminSidepanel';
 import TextInput from '@/components/ui/TextInput';
 import { useState } from 'react';
 import { Button } from "../components/ui/button";
-import ComboBox from '@/components/ui/combobox';
+
 
 
 const AvailableRefereescolumns = ["ID", "RefereeName"];
@@ -26,7 +26,7 @@ const AvailableSubmissionscolumns = ["ID", "Name", "Deadline", "Duration", "Budg
 
  const AdminAssignRefereeView = () => {
   const [RefereeId, setRefereeId] = useState<string>('');
-  const [Theme, setTheme] = useState<string>('');
+  const [SubmissionID, submissionID] = useState<string>('');
 
 
 
@@ -46,9 +46,8 @@ const AvailableSubmissionscolumns = ["ID", "Name", "Deadline", "Duration", "Budg
                     </Button>
                 </div>
                 <div className='col-span-4'>
-                  <ComboBox label="Project Theme" value={Theme} onChange={(e) => setTheme(e.target.value)} 
-                    options={["Theme 1","Theme 2","Theme 3","Theme 4"]} required={true} placeholder="Choose Themet"/>
-
+                <TextInput  required label='Submission ID' placeholder="Enter Id"
+                        value={SubmissionID} onChange={(e)=>{ submissionID(e.target.value)}}/>
                     <Button className=" mt-4 bg-white text-primary border border-primary hover:bg-slate-100 " size={"lg"} >
                         Unassign
                     </Button>
