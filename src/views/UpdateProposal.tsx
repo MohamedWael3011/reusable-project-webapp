@@ -5,14 +5,13 @@ import React, { useState } from 'react';
 import { Button } from "../components/ui/button";
 
 
-const updateproposal: React.FC = () => {
+const Updateproposal: React.FC = () => {
     const [proposalID, setProposalId] = useState("");
     const [ProposalTitle, setProposalTitle] = useState("");
     const [projectTheme, setProjectTheme] = useState("");
     const [Proposalcontent, setProposalcontent] = useState("Lorem ipsum dolor sit amet consectetur. Elit at massa amet netus urna ornare vulputate arcu. Elit egestas non et ut pulvinar cursus non. Vitae id placerat ultrices elementum vel arcu libero. Sodales fermentum platea ultricies sed. Aliquam mattis pulvinar et vel parturient. At tincidunt venenatis et consectetur sit. Urna arcu vulputate at platea amet ipsum ultricies Velit eleifend sit purus enim sed maecenas. Scelerisque porttitor eu vel purus vel. Vitae quis quisque erat neque non dolor quis dui nec. Auctor at id a ac. Amet sed nisi mollis mi in id mauris ");
 
-
-
+    
     const handleUpdate = () => {
         // Logic for adding the theme
         console.log({ proposalID,ProposalTitle,projectTheme,Proposalcontent});
@@ -109,4 +108,4 @@ const updateproposal: React.FC = () => {
     );
 };
 
-export default updateproposal;
+export default Updateproposal;
