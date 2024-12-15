@@ -1,11 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { UserValidationResponse } from "../apis/auth.api";
 import { useNavigate } from "react-router-dom";
 
 // User Context Setup
 interface UserContextProps {
-  user: UserValidationResponse | null;
-  setUser: (user: UserValidationResponse | null) => void;
+  user: { email: string; role: string } | null; // Updated to store the logged-in user's data
+  setUser: (user: { email: string; role: string } | null) => void;
   logout: () => void;
 }
 
@@ -16,7 +15,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<UserValidationResponse | null>(() =>
+  const [user, setUser] = useState<{ email: string; role: string } | null>(() =>
     JSON.parse(sessionStorage.getItem("user") || "null")
   );
 
@@ -39,6 +38,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     </UserContext.Provider>
   );
 };
+
 // eslint-disable-next-line react-refresh/only-export-components
 export const useUser = () => {
   const context = useContext(UserContext);

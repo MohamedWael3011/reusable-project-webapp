@@ -22,6 +22,7 @@ import UpdateProposal from "./views/UpdateProposal";
 import UserDeleteView from "./views/UserDeleteView";
 import SubmitProposal from "./views/proposalsubmission";
 import ReportsUpload from "./views/ReportsUpload";
+import Referee from "./views/Referee";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
       <Route path="/user/deleteproposal" element={<UserDeleteView/>} /> 
       <Route path="/user/submitproposal" element={<SubmitProposal/>} />
       <Route path="/user/submitreport" element={<ReportsUpload/>} />
+      <Route path="/referee" element={<Referee/>} />
       </Route>
       {/* Redirect unmatched routes to Home */}
       <Route path="*" element={<Navigate to="/" replace />} />

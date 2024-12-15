@@ -4,10 +4,13 @@ import RefereeIcon from "../assets/referee-icon.png";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
+import { Button } from "@/components/ui/button";
+import { useUser } from "../hooks/useUser";
 
 const Referee = () => {
   const dropdownTitle = "Review";
-  const dropdownOptions = [
+    const { logout } = useUser();
+    const dropdownOptions = [
     {
       label: "Review Proposal",
       icon: <FontAwesomeIcon icon={faPaperPlane} />,
@@ -63,9 +66,12 @@ const Referee = () => {
           />
         </div>
         <div className="flex flex-col justify-center gap-6">
-          <button className="bg-green-600 text-white w-52 py-2 px-4 rounded-lg hover:bg-green-800">
+        <Button
+            className="w-full flex justify-center items-center -mt-10 h-10 text-white bg-green-500 rounded-lg z-10"
+            onClick={logout}
+          >
             Logout
-          </button>
+          </Button>
         </div>
       </div>
 

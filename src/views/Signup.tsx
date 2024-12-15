@@ -12,23 +12,24 @@ export const Signup = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [hidePassword, sethidePassword] = useState<boolean>(false);
-  const [role, setRole] = useState<string>(""); // State for role selection
+  const [role, setRole] = useState<string>("user"); // Default role is 'user'
   const [error, setError] = useState<string | null>(null); // Error state
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (email && password && fullname && role) {
       try {
-        const success = await createAccount(fullname, email, password);
-        console.log("SuCCESS", success);
+        const success = await createAccount(fullname, email, password, role);
         if (success) {
+          setError(null);
           navigate("/signin"); // Navigate to sign-in after successful registration
         } else {
           setError("Failed to create account. Please try again.");
         }
       } catch (err) {
+        console.error("Error during account creation:", err);
         setError("An unexpected error occurred. Please try again.");
-        console.error(err);
       }
     } else {
       setError("All fields are required.");
