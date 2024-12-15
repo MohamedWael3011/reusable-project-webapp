@@ -3,25 +3,58 @@ import Calendar from "../components/Calendar";
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
 import AdminSidePanel from "../components/ui/AdminSidepanel";
-import { updateTheme } from "../../src/apis/admin.api"; // Import the updateTheme function
-
+import { updateTheme } from "../../src/apis/admin.api"; // Updated API import
+//import { getThemeDetails } from "../../src/apis/admin.api";
 
 const UpdateTheme: React.FC = () => {
-
     const [themeID, setThemeId] = useState("");
-    const [themeName, setThemeName] = useState("");
-    const [duration, setDuration] = useState("");
-    const [budget, setBudget] = useState("");
-    const [deadline, setDeadline] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
+    const [themeDetails, setThemeDetails] = useState({
+        name: "",
+        duration: "",
+        budget: "",
+        deadline: "",
+    });
 
     const handleDateSelect = (date: Date) => {
-        setDeadline(date.toISOString().split("T")[0]); 
+        setThemeDetails((prev) => ({ ...prev, deadline: date.toISOString().split("T")[0] }));
     };
 
+    // const fetchThemeDetails = async () => {
+    //     try {
+    //         const parsedThemeID = Number(themeID);
+    //         if (isNaN(parsedThemeID)) {
+    //         setMessage("Please enter a valid Theme ID.");
+    //         return;
+    //     }
+    //         setLoading(true);
+    //         setMessage(null);
+
+    //         const details = await getThemeDetails(Number(themeID));
+    //         if (details) {
+    //             setThemeDetails({
+    //                 name: themeDetails.name || "",
+    //                 duration: themeDetails.duration || "",
+    //                 budget: themeDetails.budget || "",
+    //                 deadline: themeDetails.deadline || "",
+    //             });
+    //             setMessage(`Theme details for ID ${themeID} loaded successfully.`);
+    //         } else {
+    //             setMessage("No theme found with the given ID.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching theme details:", error);
+    //         setMessage("An error occurred while fetching theme details.");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
     const handleUpdate = async () => {
-        if (!themeID || !themeName || !duration || !budget || !deadline) {
+        const { name, duration, budget, deadline } = themeDetails;
+
+        if (!themeID || !name || !duration || !budget || !deadline) {
             setMessage("Please fill in all fields.");
             return;
         }
@@ -31,21 +64,18 @@ const UpdateTheme: React.FC = () => {
 
         try {
             const result = await updateTheme(
-                Number(themeID),
-                themeName,
-                duration,
-                deadline,
-                parseFloat(budget)
+                Number(themeID), name, duration,deadline, Number(budget)
             );
 
             if (result) {
-                setMessage(`Theme with Id ${themeID} updated successfully.`);
-                
+                setMessage(`Theme with ID ${themeID} updated successfully.`);
                 setThemeId("");
-                setThemeName("");
-                setBudget("");
-                setDeadline(null);
-                setDuration("");
+                setThemeDetails({
+                    name: "",
+                    duration: "",
+                    budget: "",
+                    deadline: "",
+                });
             } else {
                 setMessage("Failed to update theme. Please try again.");
             }
@@ -59,7 +89,6 @@ const UpdateTheme: React.FC = () => {
 
     return (
         <div className="flex h-screen">
-
             <div className="w-[510px] bg-gray-200">
                 <AdminSidePanel />
             </div>
@@ -76,11 +105,21 @@ const UpdateTheme: React.FC = () => {
                                 label="Theme ID"
                                 required
                             />
+                            <Button
+                                //onClick={fetchThemeDetails}
+                                className="mt-2 bg-[#033469] text-white"
+                                disabled={loading}
+                            >
+                                {loading ? "Loading..." : "Fetch Details"}
+                            </Button>
                         </div>
+
                         <div>
                             <TextInput
-                                value={themeName}
-                                onChange={(e) => setThemeName(e.target.value)}
+                                value={themeDetails.name}
+                                onChange={(e) =>
+                                    setThemeDetails((prev) => ({ ...prev, name: e.target.value }))
+                                }
                                 placeholder="Enter Theme Name"
                                 label="Theme Name"
                                 required
@@ -89,8 +128,10 @@ const UpdateTheme: React.FC = () => {
 
                         <div>
                             <TextInput
-                                value={duration}
-                                onChange={(e) => setDuration(e.target.value)}
+                                value={themeDetails.duration}
+                                onChange={(e) =>
+                                    setThemeDetails((prev) => ({ ...prev, duration: e.target.value }))
+                                }
                                 placeholder="Enter Theme Duration"
                                 label="Duration"
                                 required
@@ -99,8 +140,10 @@ const UpdateTheme: React.FC = () => {
 
                         <div>
                             <TextInput
-                                value={budget}
-                                onChange={(e) => setBudget(e.target.value)}
+                                value={themeDetails.budget}
+                                onChange={(e) =>
+                                    setThemeDetails((prev) => ({ ...prev, budget: e.target.value }))
+                                }
                                 placeholder="Enter Theme Budget"
                                 label="Budget"
                                 required
@@ -117,9 +160,8 @@ const UpdateTheme: React.FC = () => {
                             </Button>
                             <Button
                                 className="border border-[#033469] text-[#033469] bg-transparent hover:bg-[#033469] hover:text-white"
-                                >
-                                    <a href="/admin">View All Themes</a>
-                                
+                            >
+                                <a href="/admin">View All Themes</a>
                             </Button>
                         </div>
 
@@ -133,8 +175,8 @@ const UpdateTheme: React.FC = () => {
                     <div className="flex-1 space-y-2">
                         <div className="m-14">
                             <TextInput
-                                value={deadline || ""}
-                                onChange={(e) => e.target.blur()} 
+                                value={themeDetails.deadline || ""}
+                                onChange={(e) => e.target.blur()}
                                 placeholder="Select Theme Deadline"
                                 label="Deadline"
                                 required
