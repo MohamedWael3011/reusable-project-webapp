@@ -1,111 +1,113 @@
 import TextInput from "@/components/ui/TextInput";
-import ComboBox from "@/components/ui/combobox";
 import UserSidepanel from "@/components/ui/UserSidepanel";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Button } from "../components/ui/button";
+import { updateProposal } from "../apis/user.api"; // Adjust the import path as needed
 
+const UpdateProposal: React.FC = () => {
+  const [proposalID, setProposalId] = useState("");
+  const [proposalContent, setProposalContent] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-const Updateproposal: React.FC = () => {
-    const [proposalID, setProposalId] = useState("");
-    const [ProposalTitle, setProposalTitle] = useState("");
-    const [projectTheme, setProjectTheme] = useState("");
-    const [Proposalcontent, setProposalcontent] = useState("Lorem ipsum dolor sit amet consectetur. Elit at massa amet netus urna ornare vulputate arcu. Elit egestas non et ut pulvinar cursus non. Vitae id placerat ultrices elementum vel arcu libero. Sodales fermentum platea ultricies sed. Aliquam mattis pulvinar et vel parturient. At tincidunt venenatis et consectetur sit. Urna arcu vulputate at platea amet ipsum ultricies Velit eleifend sit purus enim sed maecenas. Scelerisque porttitor eu vel purus vel. Vitae quis quisque erat neque non dolor quis dui nec. Auctor at id a ac. Amet sed nisi mollis mi in id mauris ");
+  const handleUpdate = async () => {
+    if (!proposalID || !proposalContent) {
+      setErrorMessage("Please provide a valid Proposal ID and content.");
+      return;
+    }
 
-    
-    const handleUpdate = () => {
-        // Logic for adding the theme
-        console.log({ proposalID,ProposalTitle,projectTheme,Proposalcontent});
-    };
+    setLoading(true);
+    setSuccessMessage("");
+    setErrorMessage("");
 
-    return (
+    try {
+      const success = await updateProposal(parseInt(proposalID), proposalContent);
+      if (success) {
+        setSuccessMessage("Proposal updated successfully!");
+      } else {
+        setErrorMessage("Failed to update the proposal. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating proposal:", error);
+      setErrorMessage("An error occurred while updating the proposal.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        <div className="flex h-screen">
-            {/* Left Section: Side Menu */}
-            <div className="w-[510px]">
-                {/* <SideMenu /> */}
-               <UserSidepanel/>
+  return (
+    <div className="flex h-screen">
+      {/* Left Section: Side Menu */}
+      <div className="w-[510px]">
+        <UserSidepanel />
+      </div>
+
+      {/* Right Section: Main Content */}
+      <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">
+        <div className="w-full max-w-3xl flex space-x-8">
+          <div className="flex-1 space-y-8">
+            <h1 className="text-2xl text-[#033469] font-bold mb-6">Update Proposal</h1>
+
+            {/* Proposal ID Input */}
+            <div className="w-full">
+              <TextInput
+                value={proposalID}
+                onChange={(e) => setProposalId(e.target.value)}
+                placeholder="Enter Proposal ID"
+                label="Proposal ID"
+                required
+              />
             </div>
 
-        
-            <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">
-                <div className="w-full max-w-3xl flex space-x-8">
-                    
-                    <div className="flex-1 space-y-8">
-                       
-                        <h1 className="text-2xl text-[#033469] font-bold mb-6">Update Proposal</h1>
-                        <h1 className="text-2xl text-[#033469] font mb-6">Proposal Number: {proposalID}</h1>
-                       
-                        
+            {/* Proposal Content Textarea */}
+            <div className="mb-4">
+              <label className="block text-primary text-sm font-medium mb-1">
+                Enter Your Proposal
+              </label>
+              <textarea
+                placeholder="Content..."
+                value={proposalContent}
+                onChange={(e) => setProposalContent(e.target.value)}
+                required
+                className="w-full h-[150px] px-3 py-2 border rounded-xl focus:outline-none focus:ring focus:border-blue text-black bg-blue-100"
+              ></textarea>
+            </div>
 
-                        <div className="flex space-x-4">
-                        <div className="w-full">
-                            
-                            <TextInput
-                                value={ProposalTitle}
-                                onChange={(e) => setProposalTitle(e.target.value)}
-                                placeholder="Enter Proposal ID"
-                                label="Proposal ID"
-                                required
-                            />
-                        </div>
-
-
-                        <div className="w-full">
-                            
-                            <ComboBox
-                              label="Project Theme"
-                              value={projectTheme}
-                              onChange={(e)=>setProjectTheme(e.target.value)}
-                              options={["Reusbale","Maintenance","Agile","Managment"]}
-                              placeholder="Select Project Theme"
-                            />
-                         </div>
-
-
-                        </div>
-                        
-                       
-
-                        <div className="mb-4 ">
-                        <label className="block text-primary text-sm font-medium mb-1">Enter Your Proposal</label>
-                        <textarea
-                           placeholder="Content..."
-                              value={Proposalcontent}
-                             onChange={(e) => { setProposalcontent (e.target.value);
-                           // e.target.style.height = "auto"; // Reset height to recalculate
-                           // e.target.style.height = `${e.target.scrollHeight}px`; // Set height based on content
-                          }}
-                          required
-                          className="w-full h-[100%] px-3 py-2 border rounded-xl focus:outline-none focus:ring focus:border-blue text-black bg-blue-100  overflow-hidden"
-                           style={{ minHeight: "4rem" }}
-                          />
-                           {/* // Minimum height for initial display */}
-                     
-
-                        
-
+            {/* Buttons */}
             <div className="mt-6 flex space-x-4">
-                <Button onClick={handleUpdate} className="bg-[#033469] text-white">
-                    Update
-                </Button>
-                <Button 
-                    className="border border-[#033469] text-[#033469] bg-transparent hover:bg-[#033469] hover:text-white">
-                    Cancel
-                </Button>
-          </div>
-                   
-
-                    
-                   
-
-                       
-                      
-                    </div>
-                </div>
+              <Button
+                className="bg-[#033469] text-white"
+                onClick={handleUpdate}
+                disabled={loading}
+              >
+                {loading ? "Updating..." : "Update"}
+              </Button>
+              <Button
+                className="border border-[#033469] text-[#033469] bg-transparent hover:bg-[#033469] hover:text-white"
+                onClick={() => {
+                  setProposalId("");
+                  setProposalContent("");
+                  setSuccessMessage("");
+                  setErrorMessage("");
+                }}
+              >
+                Cancel
+              </Button>
             </div>
+
+            {/* Feedback Messages */}
+            {successMessage && (
+              <p className="text-green-500 text-center mt-4">{successMessage}</p>
+            )}
+            {errorMessage && (
+              <p className="text-red-500 text-center mt-4">{errorMessage}</p>
+            )}
+          </div>
         </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-export default Updateproposal;
+export default UpdateProposal;
