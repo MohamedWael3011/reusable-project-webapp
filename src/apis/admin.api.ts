@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import soapRequest from "easy-soap-request";
 import { XMLParser } from "fast-xml-parser";
 
@@ -221,50 +222,55 @@ export const getTheme = async (themeId: number): Promise<Theme | null> => {
 
 
 
-// // Define the type for the Theme
-// export interface Theme {
-//   id: number;
-//   name: string;
-//   deadline: string;
-//   duration: string;
-//   budget: string;
-// }
+// Define the type for the Theme
+export interface Theme {
+  ThemeId: number;
+  Name: string;
+  Deadline: string | null;
+  Duration: number | null;
+  Budget: number | null;
+}
 
-// // The API function to fetch themes
-// export const viewProjectThemes = async (): Promise<Theme[]> => {
-//   const xml = `
-//     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-//       <soap:Body>
-//         <ViewProjectTheme xmlns="http://tempuri.org/" />
-//       </soap:Body>
-//     </soap:Envelope>
-//   `;
+// The API function to fetch themes
+export const viewProjectThemes = async (): Promise<Theme[]> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <ViewProjectTheme xmlns="http://tempuri.org/" />
+      </soap:Body>
+    </soap:Envelope>
+  `;
 
-//   try {
-//     const { response } = await soapRequest({
-//       url: "http://your-service-endpoint", // Replace with your actual SOAP service endpoint
-//       headers: {
-//         "Content-Type": "text/xml;charset=UTF-8",
-//         SOAPAction: "http://tempuri.org/ViewProjectTheme", // Replace with actual SOAPAction
-//       },
-//       xml,
-//     });
+  try {
+    // Make the SOAP request
+    const { response } = await soapRequest({
+      url, // Replace with your actual SOAP service endpoint
+      headers: {
+        "Content-Type": "text/xml;charset=UTF-8",
+        SOAPAction: "http://tempuri.org/ViewProjectTheme", // Replace with actual SOAPAction
+      },
+      xml,
+    });
 
-//     const parsedResponse = parser.parse(response.body);
-//     const rows = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.Table;
+    // Parse the XML response body
+    const parsedResponse = parser.parse(response.body);
+    // Extract the ViewProjectThemeResult from the parsed response
+    const result = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.diffgram.DocumentElement.Themes
 
-//     // Ensure rows are always returned as an array
-//     const themes = Array.isArray(rows) ? rows : [rows];
 
-//     return themes.map((theme) => ({
-//       id: theme.themeId,
-//       name: theme.name,
-//       deadline: theme.deadline || "N/A",
-//       duration: theme.duration || "N/A",
-//       budget: theme.budget || "N/A",
-//     }));
-//   } catch (error) {
-//     console.error("SOAP Request Error:", error);
-//     return [];
-//   }
-// };
+
+    // If themes is not an array, convert it into an array
+
+    // Map over the themes and extract necessary properties
+    return result.map((theme: any) => ({
+      ThemeId: theme.themeId,
+      Name: theme.name,
+      Duration: theme.duration || "N/A",  // Default to "N/A" if undefined
+      Deadline: theme.deadline || "N/A",  // Default to "N/A" if undefined
+      Budget: theme.budget  || "N/A"
+    }));
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return [];
+  }
+};

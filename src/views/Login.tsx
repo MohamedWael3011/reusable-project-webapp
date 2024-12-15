@@ -23,7 +23,7 @@ export const Login = () => {
         const response = await logIn(email, password);
 
         if (response.IsSuccess) {
-          setUser({ email, role: response.Role ?? "" });
+          setUser({ email, role: response.Role ?? "", id: response.Id! });
           setError(null);
 
           switch (response.Role) {
