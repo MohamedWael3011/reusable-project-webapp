@@ -7,6 +7,14 @@ const headers = {
   SOAPAction: "http://tempuri.org/",
 };
 
+export interface Theme {
+  ThemeId: number;         // The ID of the theme (integer)
+  Name: string;            // The name of the theme (string)
+  Duration: number | null; // Duration in days (nullable integer)
+  Budget: number | null;   // Budget in currency (nullable integer)
+  Deadline: string | null; // Deadline (nullable string, can be formatted as Date if needed)
+}
+
 const parser = new XMLParser({
   ignoreAttributes: false,
   removeNSPrefix: true,
@@ -164,46 +172,50 @@ export const unassignReferee = async (refereeId: number, submissionId: number): 
 };
 
 
-// Define the function to fetch and return theme details
-// export const getThemeDetails = async (themeID: number): Promise<{ name: string, duration: string, budget: string, deadline: string }[] | null> => {
-//   // Create the URL or API endpoint for fetching data based on themeID
-//   const url = `http://localhost:51415/A_Services.asmx/${themeID}`; // Modify this URL according to your API structure
+export const getTheme = async (themeId: number): Promise<Theme | null> => {
+  const xml = `
+  <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+      <GetTheme xmlns="http://tempuri.org/">
+        <themeId>${themeId}</themeId>
+      </GetTheme>
+    </soap:Body>
+  </soap:Envelope>
+  `;
 
-//   try {
-//     // Fetch the data from the API or XML response
-//     const response = await fetch(url);
-    
-//     // Check if the response is successful
-//     if (!response.ok) {
-//       console.error(`Error: ${response.status} ${response.statusText}`);
-//       throw new Error(`Failed to fetch theme details: ${response.statusText}`);
-//     }
+  const headers = {
+    "Content-Type": "text/xml;charset=UTF-8",
+    SOAPAction: "http://tempuri.org/GetTheme",
+  };
 
-//     // Assuming the response is in XML format, we parse it
-//     const text = await response.text();  // Retrieve the response as text
-//     const parser = new DOMParser();      // Create a new DOMParser instance
-//     const xmlDoc = parser.parseFromString(text, 'application/xml'); // Parse the response to XML
+  try {
+    // Send the SOAP request to the web service
+    const { response } = await soapRequest({ url, headers, xml });
 
-//     // Extract all rows from the XML document (assuming XML structure is known)
-//     const rows = xmlDoc.getElementsByTagName('row'); // Adjust 'row' tag if needed
+    // Parse the response using a library like xml2js or any other XML parser
+    const parsedResponse = parser.parse(response.body);
 
-//     // Map over the rows to extract relevant data (name, duration, budget, deadline)
-//     if (rows.length > 0) {
-//       const result = Array.from(rows).map((row) => ({
-//         name: row.getElementsByTagName("name")[0]?.textContent ?? '',  // Extract name
-//         duration: row.getElementsByTagName("duration")[0]?.textContent ?? '',  // Extract duration
-//         budget: row.getElementsByTagName("budget")[0]?.textContent ?? '',  // Extract budget
-//         deadline: row.getElementsByTagName("deadline")[0]?.textContent ?? '',  // Extract deadline
-//       }));
-//       return result; // Return the array of theme details
-//     }
+    // Extract the theme data from the parsed response
+    const result = parsedResponse.Envelope.Body.GetThemeResponse.GetThemeResult;
 
-//     return null; // Return null if no data is found
-//   } catch (error) {
-//     console.error('Error fetching theme details:', error);
-//     return null; // Return null in case of an error
-//   }
-// };
+    // If the result is valid, return it as a Theme object
+    if (result) {
+      return {
+        ThemeId: result.ThemeId,
+        Name: result.Name,
+        Duration: result.Duration !== undefined ? result.Duration : null,
+        Budget: result.Budget !== undefined ? result.Budget : null,
+        Deadline: result.Deadline || null
+      };
+    } else {
+      console.error('Error: Theme not found or invalid response');
+      return null;
+    }
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return null;
+  }
+};
 
 
 
