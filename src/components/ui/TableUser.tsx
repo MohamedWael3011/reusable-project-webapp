@@ -40,8 +40,6 @@ const TableAdmin: React.FC<TableProps> = ({ title ,columns, data }) => {
 
                 </table>
             </div>
-
-
     );
 }
 

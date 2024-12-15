@@ -185,6 +185,16 @@ export const submitReport = async (
   title: string,
   report: string
 ): Promise<boolean> => {
+  // Debugging: Log input parameters
+  console.log("submitReport called with:", { submissionId, title, report });
+
+  // Validate submissionId
+  if (isNaN(submissionId) || submissionId <= 0) {
+    console.error("Invalid submissionId:", submissionId);
+    return false; // Return early if the submissionId is invalid
+  }
+
+  // Construct the SOAP XML request
   const xml = `
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       <soap:Body>
@@ -196,17 +206,101 @@ export const submitReport = async (
       </soap:Body>
     </soap:Envelope>
   `;
+  
+  // Log the SOAP XML request for debugging
+  console.log("SOAP XML Request:", xml);
 
+  // Set request headers
   headers.SOAPAction = "http://tempuri.org/SubmitReport";
+  headers['Content-Type'] = 'text/xml; charset=utf-8';  // Ensure proper Content-Type
+  
+  try {
+    // Send the SOAP request
+    const { response } = await soapRequest({ url, headers, xml });
+    
+    // Log the entire response for debugging
+    console.log("SOAP Response:", response.body);
+
+    // Parse the response
+    const parsedResponse = parser.parse(response.body);
+    console.log("Parsed SOAP Response:", parsedResponse);  // Log parsed response
+
+    // Extract the result from the parsed response
+    const result = parsedResponse.Envelope.Body.SubmitReportResponse
+      .SubmitReportResult as boolean;
+
+    // Return the result
+    return result;
+  } catch (error) {
+    // Log the error in case of failure
+    console.error("Error submitting report:", error);
+    return false;  // Return false if an error occurs
+  }
+};
+
+
+
+// Define the Submission type
+export interface Submission {
+  submissionId: number;
+  userId: number;
+  proposal: string;
+  status: string;
+  title: string;
+}
+
+export const getAcceptedSubmissions = async (userId: number): Promise<Submission[]> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <GetAcceptedSubmissions xmlns="http://tempuri.org/">
+          <user_id>${userId}</user_id>
+        </GetAcceptedSubmissions>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  headers.SOAPAction = "http://tempuri.org/GetAcceptedSubmissions";
 
   try {
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
-    const result = parsedResponse.Envelope.Body.SubmitReportResponse
-      .SubmitReportResult as boolean;
-    return result;
+
+    // Log the full SOAP Envelope to examine the structure
+    // console.log("Full SOAP Envelope:", parsedResponse?.Envelope);
+
+    // // Check the Body and GetAcceptedSubmissionsResponse specifically
+    // console.log("SOAP Body:", parsedResponse?.Envelope?.Body);
+    // console.log("GetAcceptedSubmissionsResponse:", parsedResponse?.Envelope?.Body?.GetAcceptedSubmissionsResponse);
+
+    // Inspect the diffgram and DocumentElement more thoroughly
+    const diffgram = parsedResponse?.Envelope?.Body?.GetAcceptedSubmissionsResponse?.GetAcceptedSubmissionsResult?.diffgram;
+    // console.log("diffgram:", diffgram);
+    // console.log("DocumentElement:", diffgram?.DocumentElement);
+
+    // If Submissions is not found, log the structure of DocumentElement
+    // if (diffgram?.DocumentElement) {
+    //   console.log("DocumentElement structure:", diffgram?.DocumentElement);
+    // }
+
+    // Try to find Submissions from the structure
+    const result = diffgram?.DocumentElement?.Submissions || [];
+
+    // If there are no submissions, log this for debugging
+    // if (result.length === 0) {
+    //   console.log("No submissions found in the response.");
+    // }
+
+    // Map the result to match the Submission type
+    return result.map((submission: any) => ({
+      submissionId: submission.submissionId ?? 0,
+      userId: submission.userId ?? userId,
+      proposal: submission.proposal ?? "",
+      status: submission.status ?? "",
+      title: submission.title ?? "",
+    }));
   } catch (error) {
     console.error("SOAP Request Error:", error);
-    return false;
+    return [];
   }
 };
