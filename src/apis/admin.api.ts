@@ -164,8 +164,47 @@ export const unassignReferee = async (refereeId: number, submissionId: number): 
 };
 
 
+// Define the function to fetch and return theme details
+// export const getThemeDetails = async (themeID: number): Promise<{ name: string, duration: string, budget: string, deadline: string }[] | null> => {
+//   // Create the URL or API endpoint for fetching data based on themeID
+//   const url = `http://localhost:51415/A_Services.asmx/${themeID}`; // Modify this URL according to your API structure
 
-// // The API function to fetch themes
+//   try {
+//     // Fetch the data from the API or XML response
+//     const response = await fetch(url);
+    
+//     // Check if the response is successful
+//     if (!response.ok) {
+//       console.error(`Error: ${response.status} ${response.statusText}`);
+//       throw new Error(`Failed to fetch theme details: ${response.statusText}`);
+//     }
+
+//     // Assuming the response is in XML format, we parse it
+//     const text = await response.text();  // Retrieve the response as text
+//     const parser = new DOMParser();      // Create a new DOMParser instance
+//     const xmlDoc = parser.parseFromString(text, 'application/xml'); // Parse the response to XML
+
+//     // Extract all rows from the XML document (assuming XML structure is known)
+//     const rows = xmlDoc.getElementsByTagName('row'); // Adjust 'row' tag if needed
+
+//     // Map over the rows to extract relevant data (name, duration, budget, deadline)
+//     if (rows.length > 0) {
+//       const result = Array.from(rows).map((row) => ({
+//         name: row.getElementsByTagName("name")[0]?.textContent ?? '',  // Extract name
+//         duration: row.getElementsByTagName("duration")[0]?.textContent ?? '',  // Extract duration
+//         budget: row.getElementsByTagName("budget")[0]?.textContent ?? '',  // Extract budget
+//         deadline: row.getElementsByTagName("deadline")[0]?.textContent ?? '',  // Extract deadline
+//       }));
+//       return result; // Return the array of theme details
+//     }
+
+//     return null; // Return null if no data is found
+//   } catch (error) {
+//     console.error('Error fetching theme details:', error);
+//     return null; // Return null in case of an error
+//   }
+// };
+
 
 
 
