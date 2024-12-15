@@ -10,13 +10,13 @@ import { useUser } from '@/hooks/useUser';
 
 const SubmitProposal: React.FC = () => {
   const [proposalTitle, setProposalTitle] = useState('');
-  const [projectTheme, setProjectTheme] = useState<{ name: string, id: number }>({ name: '', id: 0 }); // updated state to store both name and id
+  const [projectTheme, setProjectTheme] = useState<{ name: string, id: number }>({ name: '', id: 0 });
   const [proposalText, setProposalText] = useState('');
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const { user } = useUser();
-  const [data, setData] = useState<Theme[]>([]); // State to hold fetched themes
+  const [data, setData] = useState<Theme[]>([]);
 
   // Fetch themes when the component is mounted
   useEffect(() => {
@@ -42,10 +42,10 @@ const SubmitProposal: React.FC = () => {
     setErrorMessage('');
 
     try {
-      // Use the theme ID in the submission
+
       const result = await submitProposal(
         userId,
-        projectTheme.id,  // Pass the selected theme id
+        projectTheme.id,  
         proposalTitle,
         proposalText
       );
@@ -93,14 +93,14 @@ const SubmitProposal: React.FC = () => {
               <div className="flex-1 p-4 rounded-xl">
                 <ComboBox
                   label="Project Theme"
-                  value={`${projectTheme.id}`} // Display the name of the selected theme
+                  value={projectTheme.name} 
                   onChange={(e) => {
                     const selectedTheme = data.find(theme => theme.Name === e.target.value);
                     if (selectedTheme) {
-                      setProjectTheme({ name: selectedTheme.Name, id: selectedTheme.ThemeId }); // Save both name and id
+                      setProjectTheme({ name: selectedTheme.Name, id: selectedTheme.ThemeId });
                     }
                   }}
-                  options={data.map(theme => theme.Name)}
+                  options={data.map(theme => theme.Name)} 
                   required={true}
                   placeholder="Choose Theme"
                 />
