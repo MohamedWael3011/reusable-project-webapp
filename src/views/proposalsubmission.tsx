@@ -42,7 +42,6 @@ const SubmitProposal: React.FC = () => {
     setErrorMessage('');
 
     try {
-
       const result = await submitProposal(
         userId,
         projectTheme.id,  
