@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/hooks/useUser";
+import { sendEmail } from "@/apis/email.api";
 
 const DetailedProposalView = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
