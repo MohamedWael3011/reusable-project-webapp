@@ -215,6 +215,7 @@ export const viewAllproposals = async (): Promise<Proposals[] | null> => {
 
 
 
+// Assuming `viewAllproposals` returns proposals with SubmissionId
 export const viewAllreports = async (): Promise<Reports[] | null> => {
   const xml = `
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -224,51 +225,41 @@ export const viewAllreports = async (): Promise<Reports[] | null> => {
     </soap:Envelope>
   `;
 
-  headers.SOAPAction = "http://tempuri.org/viewAllreports";
+  const headers = {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/viewAllreports'
+  };
 
   try {
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
-    console.log(parsedResponse);
 
-    // Extract the proposals data from the response
+    console.log("Parsed SOAP Response:", parsedResponse); // Debugging
+
     const result = parsedResponse?.Envelope?.Body?.viewAllreportsResponse?.viewAllreportsResult?.Reports;
 
-    console.log(result)
-    if (result && Array.isArray(result)) {
-      return result.map((item: any) => ({
-         ReportId:item.ReportId,
-         title:item.title,
-        // role:item.role
+    if (result) {
+      // Ensure the result is an array
+      const reports = Array.isArray(result) ? result : [result];
+
+      // Ensure the object matches the Reports interface
+      return reports.map((item: any) => ({
+        ReportId: item.ReportId ?? 0,  // Ensure defaults if ReportId is missing
+        SubmissionID: item.SubmissionId ?? 0,  // Use correct SubmissionID property name
+        title: item.title ?? "No Title",  // Ensure defaults if Title is missing
       }));
-       
-     ;
-    
     } else {
-      console.error("Error: No proposals found or invalid response format");
-      return null;
+      console.error("Error: No reports found or invalid response format");
+      return null; // Return null if no reports found
     }
   } catch (error) {
     console.error("SOAP Request Error:", error);
-    return null;
+    return null; // Return null if an error occurs
   }
 };
 
-export interface SoapEnvelope {
-  Envelope: {
-    Body: {
-      GetRefProposalsResponse: {
-        GetRefProposalsResult: {
-          'diffgr:diffgram': {
-            DocumentElement: {
-              SubmissionReferees: { SubmissionId: number }[];
-            };
-          };
-        };
-      };
-    };
-  };
-}
+
+
 
 export const getRefProposals = async (refereeId: number): Promise<Proposals[]> => {
   const xml = `
@@ -311,6 +302,49 @@ export const getRefProposals = async (refereeId: number): Promise<Proposals[]> =
   }
 };
 
+export const getRefReports = async (refereeId: number): Promise<Reports[]> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <GetRefReports xmlns="http://tempuri.org/">
+          <refereeId>${refereeId}</refereeId>
+        </GetRefReports>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  const headers = {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/GetRefReports'
+  };
+
+  try {
+    const { response } = await soapRequest({ url, headers, xml });
+    const parsedResponse = parser.parse(response.body);
+
+    console.log("Parsed SOAP Response:", parsedResponse); // Debugging
+
+    const reports = parsedResponse?.Envelope?.Body?.GetRefReportsResponse?.GetRefReportsResult?.Reports;
+
+    if (reports && Array.isArray(reports)) {
+      return reports.map((report: any) => ({
+        ReportId: report?.ReportId ?? 0,  // Default value if ReportId is missing
+        SubmissionID: report?.SubmissionId ?? 0,  // Correct usage of SubmissionID
+        title: report?.title ?? "No Title",  // Default value if Title is missing
+      }));
+    } else {
+      console.error("Error: No reports found or invalid response format");
+      return []; // Return an empty array if no reports found or invalid response
+    }
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return []; // Return an empty array if an error occurs
+  }
+};
+
+
+
+
 
 export interface Proposals {
   submissionId: number;
@@ -330,9 +364,8 @@ export interface Proposals_desc{
   title:string;
   themename:string;
 }
-export interface Reports
-{
-  ReportId :number;
-  title:String;
-  //role:String
-}
+export interface Reports {
+  ReportId: number;
+  SubmissionID: number;
+  title: string;
+};

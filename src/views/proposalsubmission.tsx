@@ -67,7 +67,10 @@ const SubmitProposal: React.FC = () => {
     <div className="min-h-screen flex justify-end items-center">
       {/* Side Panel */}
       <div className="w-[510px]">
-        <UserSidepanel username={user?.email || "User"}/>
+            <UserSidepanel
+                username={user?.name || "Unknown User"} 
+                id={user?.id || 0} // ID or fallback
+            />   
       </div>
 
       {/* Main Content */}

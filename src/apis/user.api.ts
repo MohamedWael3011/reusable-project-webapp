@@ -45,7 +45,6 @@ export const logIn = async (email: string, password: string):Promise<UserProfile
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
     const result = parsedResponse.Envelope.Body.LogInResponse.LogInResult as UserProfile;
-
       return result
   } catch (error) {
     console.error("SOAP Request Error:", error);
@@ -227,6 +226,7 @@ export const submitProposal = async (
 };
 
 export const submitReport = async (
+  user_id: number,
   submissionId: number,
   title: string,
   report: string,
@@ -246,6 +246,7 @@ export const submitReport = async (
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       <soap:Body>
         <SubmitReport xmlns="http://tempuri.org/">
+          <user_id>${user_id}</user_id>
           <submissionid>${submissionId}</submissionid>
           <title>${title}</title>
           <report>${report}</report>
