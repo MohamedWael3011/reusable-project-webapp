@@ -42,7 +42,7 @@ const ReportsPage = () => {
                   <tr className="text-[#003366]">
                     <th className="border-b-2 py-2 px-4 text-left">ID</th>
                     <th className="border-b-2 py-2 px-4 text-left">Report Title</th>
-                    <th className="border-b-2 py-2 px-4 text-left">Role</th>
+                    {/* <th className="border-b-2 py-2 px-4 text-left">Role</th> */}
                     <th className="border-b-2 py-2 px-4 text-right pr-9"></th>
                   </tr>
                 </thead>

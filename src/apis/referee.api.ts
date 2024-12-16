@@ -103,7 +103,7 @@ export const getProposal = async (subid: number): Promise<any | null> => {
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
     const result =
-      parsedResponse.Envelope.Body.GetProposalResponse.GetProposalResult;
+      parsedResponse.Envelope.Body.GetProposalResponse.GetProposalResult.diffgram.DocumentElement.Submissions;
     return result || null;
   } catch (error) {
     console.error("SOAP Request Error:", error);
@@ -321,7 +321,15 @@ export interface Proposals {
   title:string;
   themename:string;
 }
-
+export interface Proposals_desc{
+  submissionId: number;
+ // UserID: Number;
+  //ThemeID: Number;
+  Proposal: string;
+  status: string;
+  title:string;
+  themename:string;
+}
 export interface Reports
 {
   ReportId :number;
