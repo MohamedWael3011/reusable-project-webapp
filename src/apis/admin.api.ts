@@ -379,10 +379,12 @@ export const fetchSubmissions = async (): Promise<Submission[]> => {
     const parsedResponse = parser.parse(response.body);
 
 
-    const result =
+    let result =
       parsedResponse.Envelope.Body.AvailablesubmissionsResponse.AvailablesubmissionsResult.Submissions;
     console.log(result)
-
+      if (!Array.isArray(result)) {
+        result = [result];
+      }
       return result.map((submission: any) => ({
       SubmissionId: submission.SubmissionId,
       UserId: submission.userid,
