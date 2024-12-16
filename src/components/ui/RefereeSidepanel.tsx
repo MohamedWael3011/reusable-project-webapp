@@ -40,8 +40,11 @@ const RefereeSidepanel: React.FC = () => {
       <div className="bg-background h-[100%] overflow-hidden w-full">
         <div className="flex flex-col h-[100%] pt-10 pb-10 gap-5 justify-evenly items-center bg-[#CEE0F3] w-full ">
           <img src={LOGO} className="w-48" alt="Logo" />
-          <div className="flex justify-center flex-col ">
-            <FontAwesomeIcon icon={faUser} size="2xl" style={{color: "#033469",}}/>
+          <div className="flex justify-center flex-col cursor-pointer" onClick={()=>navigate("/referee")}>
+            <FontAwesomeIcon
+             icon={faUser}
+             size="2xl"
+             style={{color: "#033469",}}/>
             <span className="  text-primary text-2xl  mb-6 text-center">Referee</span>
           </div>
           <div className="flex flex-col justify-center gap-0 ">

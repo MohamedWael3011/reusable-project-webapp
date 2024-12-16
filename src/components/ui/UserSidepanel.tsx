@@ -79,7 +79,7 @@ const UserSidepanel: React.FC<UserSidepanelProps> = ({ username, id }) => {
     <div className="bg-background h-fit w-full col-span-3 overflow-hidden">
       <div className="flex flex-col pt-5 pb-10 gap-3 justify-center items-center bg-[#CEE0F3] w-full">
         <img src={LOGO} className="w-36" alt="Logo" />
-        <div className="flex justify-center flex-col items-center">
+        <div className="flex justify-center flex-col items-center hover:cursor-pointer" onClick={()=>navigate("/user")}>
           <FontAwesomeIcon
             icon={faUser}
             size="2xl"
