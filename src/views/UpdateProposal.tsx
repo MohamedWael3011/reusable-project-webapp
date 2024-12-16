@@ -49,7 +49,10 @@ const handleUpdate = async () => {
     <div className="flex h-screen">
       {/* Left Section: Side Menu */}
       <div className="w-[510px]">
-        <UserSidepanel username={user?.email || "User"}/>
+            <UserSidepanel
+                username={user?.name || "Unknown User"} 
+                id={user?.id || 0} // ID or fallback
+            />   
       </div>
 
       {/* Right Section: Main Content */}

@@ -1,4 +1,3 @@
-
 import TableUser from '@/components/ui/TableAdmin';
 import UserSidepanel from '@/components/ui/UserSidepanel';
 import { viewProjectThemes, Theme } from "../apis/admin.api";
@@ -22,7 +21,9 @@ export const UserMainView = () => {
         try {
             const themes = await viewProjectThemes(); 
             setData(themes);
-            console.log("data>>" + data)
+            
+            console.log("data>>" + user?.name)
+
         } catch (error) {
             console.error("Error fetching themes:", error);
         } finally {
@@ -36,13 +37,16 @@ export const UserMainView = () => {
 
     return (
         <div className='flex grid grid-cols-12' >
-        <UserSidepanel username={user?.email || "User"}/>
-        <div className='col-span-9 flex items-start justify-center mt-44'>
-            {loading ? (
-                <p>Loading themes...</p>
-                ) : (
-                <TableUser title="Available Project Themes" columns={columns} data={data} />
-            )}
+            <UserSidepanel
+                username={user?.name || "Unknown User"} 
+                id={user?.id || 0} // ID or fallback
+            />        
+            <div className='col-span-9 flex items-start justify-center mt-44'>
+                {loading ? (
+                    <p>Loading themes...</p>
+                    ) : (
+                    <TableUser title="Available Project Themes" columns={columns} data={data} />
+                )}
             </div>
         </div>
     );

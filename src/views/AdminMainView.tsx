@@ -31,7 +31,7 @@ export const AdminMainView = () => {
 
   return (
     <div className="grid grid-cols-12">
-      <AdminSidepanel username={user?.email || "Admin"}/>
+      <AdminSidepanel username={user?.name||"3aw"} userId={user?.id||0} />
       <div className="col-span-9 flex items-start justify-center mt-44">
         {loading ? (
           <p>Loading themes...</p>

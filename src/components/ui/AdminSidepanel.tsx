@@ -12,11 +12,11 @@ import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
 
 interface AdminSidepanelProps {
-  username: string; // Define the prop for username
-  
+  username: string; // Prop for username
+  userId: number; // Prop for user ID
 }
 
-const AdminSidepanel: React.FC<AdminSidepanelProps> = ({ username }) => {
+const AdminSidepanel: React.FC<AdminSidepanelProps> = ({ username, userId }) => {
   const { logout } = useUser();
   const navigate = useNavigate();
 
@@ -78,14 +78,15 @@ const AdminSidepanel: React.FC<AdminSidepanelProps> = ({ username }) => {
     <div className="bg-background h-screen overflow-hidden w-full col-span-3">
       <div className="flex flex-col pt-5 pb-10 gap-5 justify-center items-center bg-[#CEE0F3] w-full ">
         <img src={LOGO} className="w-36" alt="Logo" />
-        <div className="flex justify-center flex-col ">
+        <div className="flex justify-center flex-col items-center">
           <FontAwesomeIcon
             icon={faUser}
             size="2xl"
             style={{ color: "#033469" }}
           />
-          {/* Replace static 'Admin' with dynamic username */}
-          <span className="text-primary text-xl text-center">{username}</span>
+          {/* Display username and ID */}
+          <span className="text-primary text-2xl text-center">{username}</span>
+          <span className="text-gray-500 text-lg">ID: {userId}</span>
         </div>
         <div className="flex flex-col justify-center">
           <DropdownComponent

@@ -19,6 +19,7 @@ const AvailableSubmissionsData = [
   { id: 3, name: "Reusable", deadline: "16/12/2024", duration: "4 Days", budget: "10000.0" },
 ];
 
+
 const AvailableSubmissionscolumns = ["ID", "Name", "Deadline", "Duration", "Budget"];
 
 const AdminAssignRefereeView = () => {
@@ -57,14 +58,12 @@ const AdminAssignRefereeView = () => {
 
   return (
     <div className='grid grid-cols-12'>
-       <AdminSidepanel username={user?.email || "Admin"}/>
-
+      <AdminSidepanel username={user?.name||"3aw"} userId={user?.id||0} />
+      
       <div className='col-span-9 flex flex-col gap-12 pt-10 pl-10'>
         <h2 className="self-start ml-6 text-primary text-2xl font-bold mb-2 text-center">
           Assign Referees to Submissions
         </h2>
-
-        
 
         <div className='grid grid-cols-12 gap-36'>
           <div className='col-span-4'>

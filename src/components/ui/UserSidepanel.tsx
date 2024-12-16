@@ -12,13 +12,12 @@ import { useUser } from "../../hooks/useUser";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
 
-
 interface UserSidepanelProps {
-  username: string; // Define the prop for username
-  
+  username: string; // Define the prop for username (email)
+  id: number; // Define the prop for ID
 }
 
-const UserSidepanel:React.FC<UserSidepanelProps> = ({ username }) => {
+const UserSidepanel: React.FC<UserSidepanelProps> = ({ username, id }) => {
   const { logout } = useUser();
   const dropdown1Title = "Proposals";
   const dropdown1Options = [
@@ -41,7 +40,7 @@ const UserSidepanel:React.FC<UserSidepanelProps> = ({ username }) => {
     {
       label: "Submit Report",
       icon: <FontAwesomeIcon icon={faPaperPlane} />,
-    }
+    },
   ];
 
   const dropdown3Title = "Notifications";
@@ -76,37 +75,43 @@ const UserSidepanel:React.FC<UserSidepanelProps> = ({ username }) => {
     }
   };
 
-
   return (
     <div className="bg-background h-fit w-full col-span-3 overflow-hidden">
       <div className="flex flex-col pt-5 pb-10 gap-3 justify-center items-center bg-[#CEE0F3] w-full">
         <img src={LOGO} className="w-36" alt="Logo" />
-        <div className="flex justify-center flex-col ">
+        <div className="flex justify-center flex-col items-center">
           <FontAwesomeIcon
             icon={faUser}
             size="2xl"
             style={{ color: "#033469" }}
           />
           <span className="text-primary text-2xl text-center">{username}</span>
+          <span className="text-gray-500 text-lg">ID: {id}</span>
         </div>
         <div className="flex flex-col justify-center ">
           <div>
-            <Dropdown title={dropdown1Title}
+            <Dropdown
+              title={dropdown1Title}
               options={dropdown1Options}
               onOptionSelect={handleManageSelect}
-              onChange={handleManageSelect} />
+              onChange={handleManageSelect}
+            />
           </div>
           <div>
-            <Dropdown title={dropdown2Title}
-             options={dropdown2Options} 
-             onOptionSelect={handleManageSelect}
-             onChange={handleManageSelect} />
+            <Dropdown
+              title={dropdown2Title}
+              options={dropdown2Options}
+              onOptionSelect={handleManageSelect}
+              onChange={handleManageSelect}
+            />
           </div>
           <div>
-            <Dropdown title={dropdown3Title} 
-            options={dropdown3Options}
-            onOptionSelect={handleManageSelect}
-            onChange={handleManageSelect} />
+            <Dropdown
+              title={dropdown3Title}
+              options={dropdown3Options}
+              onOptionSelect={handleManageSelect}
+              onChange={handleManageSelect}
+            />
           </div>
           <Button
             className="w-full flex justify-center items-center -mt-10 h-10 text-white bg-green-500 rounded-lg z-10"

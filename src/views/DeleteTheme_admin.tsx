@@ -35,7 +35,7 @@ const DeleteTheme: React.FC = () => {
     return (
         <div className="flex h-screen">
             <div className="w-[510px] bg-gray-200">
-            <AdminSidepanel username={user?.email || "Admin"}/>
+            <AdminSidepanel username={user?.name||"3aw"} userId={user?.id||0} />
             </div>
             <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">
                 <div className="w-full max-w-3xl flex space-x-8">
