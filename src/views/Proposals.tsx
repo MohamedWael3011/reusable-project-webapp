@@ -3,12 +3,15 @@ import { viewAllproposals, Proposals } from "@/apis/referee.api"; // Importing t
 import { getRefProposals } from "@/apis/referee.api"; // Importing the getRefProposals API function
 import RefereeSidepanel from "@/components/ui/RefereeSidepanel"; // Side panel component
 import { useUser } from "@/hooks/useUser"; // Importing the UserContext to get the user information
+import { useNavigate } from "react-router-dom";
 
 const ProposalsPage = () => {
   const { user } = useUser(); // Get user info from context
   const [proposalData, setProposalData] = useState<Proposals[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null); // For handling error messages
+  const [error, setError] = useState<string | null>(null);
+   // For handling error messages
+   const router = useNavigate();
 
   useEffect(() => {
     const fetchProposalData = async () => {
@@ -56,6 +59,10 @@ const ProposalsPage = () => {
     }
   }, [user]); // Re-run the effect when user changes
 
+  const handleRowClick = (submissionId: number) => {
+    router(`/referee/DetailedProposalView`,{state:submissionId});
+  };
+
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
       <RefereeSidepanel />
@@ -90,7 +97,10 @@ const ProposalsPage = () => {
                 </tr>
               ) : (
                 proposalData?.map((item) => (
-                  <tr key={item.submissionId} className="hover:bg-[#D1E8F7]">
+                  <tr
+                   key={item.submissionId}
+                    className="hover:bg-[#D1E8F7]"
+                    onClick={() => handleRowClick(item.submissionId)}>
                     <td className="border-b py-3 px-4 text-black">{item.submissionId}</td>
                     <td className="border-b py-3 px-4 text-black">{item.themename}</td>
                     <td className="border-b py-3 px-4 text-black">{item.title}</td>
