@@ -6,16 +6,15 @@ import { getProposal, updateProposal } from "@/apis/referee.api";
 import { useLocation } from "react-router-dom";
 import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@/hooks/useUser";
-import { sendEmail } from "@/apis/email.api";
+import { useUser } from "../hooks/useUser";
 
 const DetailedProposalView = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
   const { user } = useUser();
 
-  // const [feedback, setFeedback] = useState(""); 
- 
-  const subId  = useLocation(); 
+  // const [feedback, setFeedback] = useState("");
+
+  const subId = useLocation();
   // const [selectedScreen, setSelectedScreen] = useState("Proposals"); // Default screen
   const [Proposals_desc, setProposalDetails] = useState({
     submissionId: "",
@@ -63,11 +62,20 @@ const DetailedProposalView = () => {
 
       if (result) {
         alert("Proposal status updated successfully.");
-        await sendEmail(
-          user?.email || "2021170831@cis.asu.edu.eg",
-          submissionId,
-          status
-        );
+        try {
+          const response = await fetch("http://localhost:3001/api/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              to: user?.email || "2021170831@cis.asu.edu.eg",
+              subject: `Submission ${submissionId} is ${status}`,
+              html: `<p>We are informing your that your proposal with id <strong>${submissionId}</strong> has been <strong>${status}</strong>.</p>`,
+            }),
+          });
+          alert(response);
+        } catch (error) {
+          console.error("Error:", error);
+        }
       } else {
         alert("Failed to update proposal status.");
       }
@@ -79,8 +87,11 @@ const DetailedProposalView = () => {
 
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
-     {/* Sidebar Section */}
-     <RefereeSidepanel refereeName={user?.name || "3aw"} refereeId={user?.id || 0} />
+      {/* Sidebar Section */}
+      <RefereeSidepanel
+        refereeName={user?.name || "3aw"}
+        refereeId={user?.id || 0}
+      />
 
       {/* Main Content Section */}
       <div className="flex flex-col py-10 px-10">
