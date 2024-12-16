@@ -68,8 +68,8 @@ useEffect(() => {
 
   return (
     <div className="flex grid grid-cols-12">
-      <UserSidepanel />
-      <div className="col-span-9 flex items-start justify-center mt-44">
+        <UserSidepanel username={user?.email || "User"}/>
+        <div className="col-span-9 flex items-start justify-center mt-44">
         {loading ? (
           <p>Loading...</p>
         ) : error ? (

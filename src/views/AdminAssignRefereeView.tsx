@@ -4,6 +4,7 @@ import TextInput from '@/components/ui/TextInput';
 import { useState } from 'react';
 import { Button } from "../components/ui/button";
 import { assignReferee, unassignReferee } from '@/apis/admin.api'; // Import the API functions
+import { useUser } from "@/hooks/useUser";
 
 const AvailableRefereescolumns = ["ID", "RefereeName"];
 const AvailableRefereesData = [
@@ -24,6 +25,7 @@ const AdminAssignRefereeView = () => {
   const [RefereeId, setRefereeId] = useState<string>('');
   const [ProjectId, setProjectId] = useState<string>('');
   const [message, setMessage] = useState<string>(''); // For showing success or error messages
+  const { user } = useUser();
 
   // Handler for Assign button
   const handleAssignReferee = async () => {
@@ -55,7 +57,8 @@ const AdminAssignRefereeView = () => {
 
   return (
     <div className='grid grid-cols-12'>
-      <AdminSidepanel />
+       <AdminSidepanel username={user?.email || "Admin"}/>
+
       <div className='col-span-9 flex flex-col gap-12 pt-10 pl-10'>
         <h2 className="self-start ml-6 text-primary text-2xl font-bold mb-2 text-center">
           Assign Referees to Submissions

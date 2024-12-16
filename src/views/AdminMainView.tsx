@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import TableAdmin from "@/components/ui/TableAdmin";
 import AdminSidepanel from "@/components/ui/AdminSidepanel";
 import { viewProjectThemes, Theme } from "../apis/admin.api";
+import { useUser } from "@/hooks/useUser";
 
 const columns = ["ThemeId", "Name", "Deadline", "Duration", "Budget"];
 
 export const AdminMainView = () => {
   const [data, setData] = useState<Theme[]>([]); // State to hold fetched themes
   const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const { user } = useUser();
+
 
   useEffect(() => {
     const fetchThemes = async () => {
@@ -25,9 +28,10 @@ export const AdminMainView = () => {
     fetchThemes();
   }, []);
 
+
   return (
     <div className="grid grid-cols-12">
-      <AdminSidepanel />
+      <AdminSidepanel username={user?.email || "Admin"}/>
       <div className="col-span-9 flex items-start justify-center mt-44">
         {loading ? (
           <p>Loading themes...</p>

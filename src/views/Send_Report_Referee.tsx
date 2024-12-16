@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Calendar from "../components/Calendar"; // Use the Calendar component
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
-import AdminSidePanel from "../components/ui/AdminSidepanel";
+import AdminSidepanel from "../components/ui/AdminSidepanel";
 import { sendFinalReport } from "../apis/admin.api"; // Import the API call function
+import { useUser } from "@/hooks/useUser";
 
 const SendReportRef: React.FC = () => {
     const [reportTitle, setReportTitle] = useState("");
@@ -12,6 +13,9 @@ const SendReportRef: React.FC = () => {
     const [deadline, setDeadline] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false); // Track loading state
     const [message, setMessage] = useState<string | null>(null); // Success/error message
+    const { user } = useUser();
+
+
 
     const handleDateSelection = (date: Date) => {
         setDeadline(date.toISOString()); // Save the date in ISO format
@@ -43,7 +47,7 @@ const SendReportRef: React.FC = () => {
         <div className="flex h-screen">
             {/* Left Section: Side Menu */}
             <div className="w-[510px] bg-gray-200">
-                <AdminSidePanel />
+            <AdminSidepanel username={user?.email || "Admin"}/>
             </div>
 
             <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">

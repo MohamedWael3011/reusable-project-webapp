@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import AdminSidepanel from "@/components/ui/AdminSidepanel"; // Assume you have a SideMenu component
 import Calendar from "../components/Calendar"; // Use the Calendar component
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
 import AdminSidePanel from "../components/ui/AdminSidepanel";
 import { createTheme } from "../apis/admin.api";
+import { useUser } from "@/hooks/useUser";
+
 
 const AddThemePage: React.FC = () => {
   const [themeName, setThemeName] = useState("");
@@ -13,6 +14,8 @@ const AddThemePage: React.FC = () => {
   const [deadline, setDeadline] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useUser();
+
 
   const handleDateSelect = (date: Date) => {
     setDeadline(date.toISOString().split("T")[0]); 
@@ -58,8 +61,7 @@ const AddThemePage: React.FC = () => {
   return (
     <div className="flex h-screen">
       <div className="w-[510px] bg-gray-200">
-        <AdminSidePanel />
-                <AdminSidepanel></AdminSidepanel>
+      <AdminSidePanel username={user?.email || "Admin"}/>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">

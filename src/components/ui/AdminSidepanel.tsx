@@ -11,11 +11,13 @@ import { useUser } from "../../hooks/useUser";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
 
-//import { useNavigate } from "react-router-dom";
+interface AdminSidepanelProps {
+  username: string; // Define the prop for username
+  
+}
 
-const AdminSidepanel: React.FC = () => {
+const AdminSidepanel: React.FC<AdminSidepanelProps> = ({ username }) => {
   const { logout } = useUser();
-
   const navigate = useNavigate();
 
   const handleManageSelect = (option: string) => {
@@ -29,7 +31,7 @@ const AdminSidepanel: React.FC = () => {
       case "Delete Theme":
         navigate("/admin/deletetheme");
         break;
-        case "Assign Referee":
+      case "Assign Referee":
         navigate("/admin/assignreferee");
         break;
       case "Send Final Report":
@@ -39,7 +41,6 @@ const AdminSidepanel: React.FC = () => {
         break;
     }
   };
-
 
   const dropdown1Title = "Manage Themes";
   const dropdown1Options = [
@@ -83,7 +84,8 @@ const AdminSidepanel: React.FC = () => {
             size="2xl"
             style={{ color: "#033469" }}
           />
-          <span className="  text-primary text-xl text-center">Admin</span>
+          {/* Replace static 'Admin' with dynamic username */}
+          <span className="text-primary text-xl text-center">{username}</span>
         </div>
         <div className="flex flex-col justify-center">
           <DropdownComponent

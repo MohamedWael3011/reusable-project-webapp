@@ -85,7 +85,9 @@ const ReportsUpload: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center">
-      <div className="w-[510px]"><UserSidepanel /></div>
+      <div className="w-[510px]"> 
+        <UserSidepanel username={user?.email || "User"}/>
+      </div>
 
       {/* Main */}
       <main className="w-full h-[100%]">

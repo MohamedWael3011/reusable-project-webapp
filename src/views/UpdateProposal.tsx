@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button";
 import { updateProposal } from "../apis/user.api"; // Adjust the import path as needed
 import { useUser } from '@/hooks/useUser';
 
+
 const UpdateProposal: React.FC = () => {
   const [proposalID, setProposalId] = useState("");
   const [proposalContent, setProposalContent] = useState("");
@@ -48,7 +49,7 @@ const handleUpdate = async () => {
     <div className="flex h-screen">
       {/* Left Section: Side Menu */}
       <div className="w-[510px]">
-        <UserSidepanel />
+        <UserSidepanel username={user?.email || "User"}/>
       </div>
 
       {/* Right Section: Main Content */}
