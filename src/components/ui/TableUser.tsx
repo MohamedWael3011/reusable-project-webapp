@@ -31,7 +31,7 @@ const TableAdmin: React.FC<TableProps> = ({ title ,columns, data }) => {
 
                                 {columns.map((column,cindex)=>(
                                     <td key={cindex} className="px-4 py-2  text-black text-sm ">
-                                        {row[column.toLowerCase()] ?? "-"}
+                                        {row[column] ?? "-"}
                                     </td>
                                 ))}
                             </tr>

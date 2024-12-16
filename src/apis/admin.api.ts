@@ -252,10 +252,10 @@ export const viewProjectThemes = async (): Promise<Theme[]> => {
       xml,
     });
 
-    // Parse the XML response body
-    const parsedResponse = parser.parse(response.body);
-    // Extract the ViewProjectThemeResult from the parsed response
-    const result = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.diffgram.DocumentElement.Themes
+      // Parse the XML response body
+      const parsedResponse = parser.parse(response.body);
+      // Extract the ViewProjectThemeResult from the parsed response
+      const result = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.diffgram.DocumentElement.Themes
 
 
     return result.map((theme: any) => ({
@@ -269,5 +269,42 @@ export const viewProjectThemes = async (): Promise<Theme[]> => {
   } catch (error) {
     console.error("SOAP Request Error:", error);
     return [];
+  }
+};
+
+
+
+export const sendFinalReport = async (
+  title: string,
+  content: string,
+  uploadDate: string, // Use ISO string for dates
+  userID: number
+): Promise<boolean> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <SendFinalReport xmlns="http://tempuri.org/">
+          <title>${title}</title>
+          <content>${content}</content>
+          <uploadDate>${uploadDate}</uploadDate>
+          <userID>${userID}</userID>
+        </SendFinalReport>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  try {
+    const { response } = await soapRequest({
+      url,
+      headers: { ...headers, SOAPAction: `${headers.SOAPAction}SendFinalReport` },
+      xml,      
+    });
+    console.log("Raw API Response:", response.body);
+
+    const parsedResponse = parser.parse(response.body);
+    return parsedResponse.Envelope.Body.SendFinalReportResponse.SendFinalReportResult;
+  } catch (error) {
+    console.error('SOAP Request Error:', error);
+    return false;
   }
 };

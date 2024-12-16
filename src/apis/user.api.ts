@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import soapRequest from "easy-soap-request";
 import { XMLParser } from "fast-xml-parser";
 
@@ -117,6 +118,7 @@ export const viewProjectTheme = async (): Promise<
     return null;
   }
 };
+
 
 export const deleteProposal = async (
   submissionId: number
@@ -334,6 +336,57 @@ export const getAcceptedSubmissions = async (userId: number): Promise<Submission
       proposal: submission.proposal ?? "",
       status: submission.status ?? "",
       title: submission.title ?? "",
+    }));
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return [];
+  }
+};
+
+
+
+
+
+
+export const getSubBeforeDeadline = async (): Promise<any[]> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <GetSubBeforeDeadline xmlns="http://tempuri.org/" />
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  try {
+    const { response } = await soapRequest({
+      url, // Replace with your SOAP service endpoint
+      headers: {
+        "Content-Type": "text/xml;charset=UTF-8",
+        SOAPAction: "http://tempuri.org/GetSubBeforeDeadline", // SOAPAction matching the backend method
+      },
+      xml,
+    });
+
+// Parse the XML response body
+const parsedResponse = parser.parse(response.body);
+
+// Extract the Submissions from the parsed response
+let result = parsedResponse.Envelope.Body.GetSubBeforeDeadlineResponse.GetSubBeforeDeadlineResult.diffgram.DocumentElement.Submissions;
+//  || [];
+
+
+    console.log(result)
+    if(!Array.isArray(result)){
+      result = [result]
+    }
+    // Map the data into a JavaScript-friendly format
+    return result.map((submission: any) => ({
+      SubmissionId: submission.submissionId,
+      UserId: submission.userId,
+      Proposal: submission.proposal,
+      Status: submission.status,
+      Title: submission.title,
+      
     }));
   } catch (error) {
     console.error("SOAP Request Error:", error);
