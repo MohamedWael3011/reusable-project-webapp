@@ -5,8 +5,8 @@ import { useState,useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
 import { getProposal,updateProposal } from "@/apis/referee.api";
-import { useLocation } from "react-router-dom";import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
-
+import { Router, useLocation } from "react-router-dom";import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
+import { useNavigate } from "react-router-dom";
 
 
 const  DetailedProposalView = () => {
@@ -22,18 +22,9 @@ const  DetailedProposalView = () => {
     title: "",
     proposal: "",
   });
+  const router = useNavigate();
 
-  const dropdownTitle = "Review"; // Title for dropdown
-  const dropdownOptions = [
-    {
-      label: "Review Proposal",
-      icon: <FontAwesomeIcon icon={faPaperPlane} />,
-    },
-    {
-      label: "Review Report",
-      icon: <FontAwesomeIcon icon={faRecycle} />,
-    },
-  ];
+
 
   useEffect(() => {
     // Fetch proposal details when submissionId is available
@@ -136,7 +127,9 @@ const  DetailedProposalView = () => {
   <button className="bg-blue-900 text-white py-2 px-6 rounded-lg hover:bg-white hover:text-blue-900" onClick={handleSendFeedback}>
     Send Feedback
   </button>
-  <button className="bg-white border border-blue-900 text-blue-900 py-2 px-6 rounded-lg hover:bg-blue-900 hover:text-white">
+  <button className="bg-white border border-blue-900 text-blue-900 py-2 px-6 rounded-lg hover:bg-blue-900 hover:text-white"
+              onClick={() => router("/referee")}
+>
     Back to Proposal
   </button>
 </div>
