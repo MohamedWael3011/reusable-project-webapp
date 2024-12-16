@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/hooks/useUser";
 import { getRefReports, Reports } from "@/apis/referee.api";
 import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
+import { useNavigate } from "react-router-dom";
+
 
 const ReportsPage = () => {
   const { user } = useUser();
   const [reportsData, setReportsData] = useState<Reports[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const router = useNavigate();
 
   useEffect(() => {
     const fetchReportsData = async () => {
@@ -32,6 +35,10 @@ const ReportsPage = () => {
     fetchReportsData();
   }, [user]);
 
+  const handleRowClick = (reportId: number) => {
+    router(`/referee/DetailedReportsView`,{state:reportId});
+  };
+
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
       <RefereeSidepanel />
@@ -46,7 +53,7 @@ const ReportsPage = () => {
           <table className="table-auto w-full border-collapse text-black">
             <thead>
               <tr className="text-[#003366]">
-                <th className="border-b-2 py-2 px-4 text-left">ID</th>
+                <th className="border-b-2 py-2 px-4 text-left">Report ID</th>
                 {/* <th className="border-b-2 py-2 px-4 text-left">Submission ID</th> */}
                 <th className="border-b-2 py-2 px-4 text-left">Report Title</th>
                 <th className="border-b-2 py-2 px-4 text-right pr-9"></th>
@@ -61,7 +68,9 @@ const ReportsPage = () => {
                 </tr>
               ) : reportsData && reportsData.length > 0 ? (
                 reportsData.map((item, index) => (
-                  <tr key={item.ReportId || index} className="hover:bg-[#D1E8F7]">
+                  <tr key={item.ReportId || index}
+                   className="hover:bg-[#D1E8F7]"
+                   onClick={() => handleRowClick(item.ReportId)}>
                     <td className="border-b py-3 px-4 text-black">{item.ReportId}</td>
                     {/* <td className="border-b py-3 px-4 text-black">{item.SubmissionID}</td> */}
                     <td className="border-b py-3 px-4 text-black">{item.title}</td>

@@ -49,7 +49,7 @@ const App = () => {
       <Route path="/user/deleteproposal" element={<UserDeleteView/>} /> 
       <Route path="/user/submitproposal" element={<SubmitProposal/>} />
       <Route path="/user/submitreport" element={<ReportsUpload/>} />
-      <Route path="/referee" element={<Referee/>} />
+      <Route path="/referee" element={<Proposals/>} />
       <Route path="/referee/proposals" element={<Proposals/>} />
       <Route path="/referee/ReportsPage" element={<Reports/>} />
       <Route path="/referee/DetailedProposalView" element={<DetailedProposalView/>} />

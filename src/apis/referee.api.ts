@@ -129,7 +129,8 @@ export const getReport = async (reportid: number): Promise<any | null> => {
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
     const result =
-      parsedResponse.Envelope.Body.GetReportResponse.GetReportResult;
+      parsedResponse.Envelope.Body.GetReportResponse.GetReportResult.diffgram.DocumentElement.Reports;
+      console.log(parsedResponse)
     return result || null;
   } catch (error) {
     console.error("SOAP Request Error:", error);
