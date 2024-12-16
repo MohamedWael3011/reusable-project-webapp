@@ -55,7 +55,9 @@ const ReportsUpload: React.FC = () => {
     }
 
     try {
+      const userId = user?.id;
       const success = await submitReport(
+        userId!,
         AcceptedSubmissions.id,  // Use the selected submission ID
         ReportTitle,             // The report title
         ReportContent,            // The report content
