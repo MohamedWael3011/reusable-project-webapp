@@ -92,7 +92,7 @@ const UpdateTheme: React.FC = () => {
     return (
         <div className="flex h-screen">
             <div className="w-[510px] bg-gray-200">
-            <AdminSidePanel username={user?.email || "Admin"}/>
+            <AdminSidePanel username={user?.name||"3aw"} userId={user?.id||0} />
             </div>
 
             <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">

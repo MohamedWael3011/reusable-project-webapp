@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 // User Context Setup
 interface UserContextProps {
-  user: { email: string; role: string, id:number } | null; // Updated to store the logged-in user's data
-  setUser: (user: { email: string; role: string, id:number } | null) => void;
+  user: {name:string; email: string; role: string, id:number } | null; // Updated to store the logged-in user's data
+  setUser: (user: { name:string; email: string; role: string, id:number } | null) => void;
   logout: () => void;
 }
 
@@ -15,7 +15,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState<{ email: string; role: string, id:number } | null>(() =>
+  const [user, setUser] = useState<{name:string; email: string; role: string, id:number } | null>(() =>
     JSON.parse(sessionStorage.getItem("user") || "null")
   );
 

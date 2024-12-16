@@ -45,7 +45,6 @@ export const logIn = async (email: string, password: string):Promise<UserProfile
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
     const result = parsedResponse.Envelope.Body.LogInResponse.LogInResult as UserProfile;
-
       return result
   } catch (error) {
     console.error("SOAP Request Error:", error);
