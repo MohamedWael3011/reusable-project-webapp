@@ -18,6 +18,7 @@ const ReportsUpload: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [data, setData] = useState<Submission[]>([]);  // State for storing submissions data
+  const [msg , setmsg]= useState("");
 
   // Fetch accepted submissions when component mounts
   useEffect(() => {
@@ -70,7 +71,8 @@ const ReportsUpload: React.FC = () => {
         setReportContent('');
         setDate(null);
         console.log("Report successfully uploaded");
-        
+        setmsg("Report successfully uploaded")
+
       } else {
         setErrorMessage("Failed to upload the report. Please try again.");
       }
@@ -190,6 +192,8 @@ const ReportsUpload: React.FC = () => {
 
             {/* Error Message */}
             {errorMessage && <p className="text-red-600 mt-4 text-center">{errorMessage}</p>}
+            {msg && <p className="text-green-600 mt-4 text-center">{msg}</p>}
+
           </form>
         </div>
       </main>

@@ -7,10 +7,13 @@ import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
 import { getProposal,updateProposal } from "@/apis/referee.api";
 import { Router, useLocation } from "react-router-dom";import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/hooks/useUser";
 
 
 const  DetailedProposalView = () => {
   const [selectedStatus, setSelectedStatus] = useState("");
+  const { user } = useUser();
+
   // const [feedback, setFeedback] = useState(""); 
  
   const subId  = useLocation(); 
@@ -76,7 +79,7 @@ const  DetailedProposalView = () => {
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
      {/* Sidebar Section */}
-    <RefereeSidepanel/>
+     <RefereeSidepanel refereeName={user?.name || "3aw"} refereeId={user?.id || 0} />
 
       {/* Main Content Section */}
       <div className="flex flex-col py-10 px-10">

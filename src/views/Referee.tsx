@@ -23,26 +23,7 @@ const Referee = () => {
     },
   ];
 
-  //const [selectedScreen, setSelectedScreen] = useState("Proposals"); // Default screen
-
-  // const proposals = [
-  //   { id: 2, theme: "assignment", title: "OS" },
-  //   { id: 3, theme: "Project", title: "Sp" },
-  //   { id: 4, theme: "assignment", title: "Spm" },
-  //   { id: 5, theme: "assignment", title: "DS" },
-  //   { id: 1, theme: "Project", title: "DB" },
-  //   { id: 6, theme: "Project", title: "DB" },
-  // ];
-
-  // const reports = [
-  //   { id: 2, theme: "assignment", title: "OS" },
-  //   { id: 3, theme: "Project", title: "Sp" },
-  //   { id: 4, theme: "assignment", title: "Spm" },
-  //   { id: 5, theme: "assignment", title: "DS" },
-  //   { id: 1, theme: "Project", title: "DB" },
-  //   { id: 6, theme: "Project", title: "DB" },
-  // ];
-
+  
 
   const [proposalData, setProposalData] = useState<Proposals[] | null>([]);
   const [reportData, setReportData] = useState<any[]>([]);
@@ -65,12 +46,6 @@ const Referee = () => {
     fetchProposalData();
   }, [selectedScreen]);
 
-  // const fetchProposalData = async () => {
-  //   const data = await viewAllproposals(); // Pass the `subid` dynamically if needed
-  //   if (data) {
-  //     setProposalData(data.Table || []); // Adjust based on the response structure
-  //   }
-  // };
 
   const fetchReportData = async () => {
     const data = await getReport(1); // Pass the `reportid` dynamically if needed

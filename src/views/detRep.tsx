@@ -8,11 +8,13 @@ import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 import { useLocation } from "react-router-dom";
 import { getReport } from "@/apis/referee.api";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/hooks/useUser";
 
 const DetailedReportsView = () => {
   const [selectedScreen, setSelectedScreen] = useState("Proposals"); // Default screen
   // const [proposalStatus, setProposalStatus] = useState("");
   // const [feedback, setFeedback] = useState(""); 
+  const { user } = useUser();
 
 
 
@@ -51,8 +53,7 @@ const [reportContent, setReportContent] = useState({
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
       {/* Sidebar Section */}
       <div className="flex flex-col items-center bg-[#CEE0F3]">
-      <RefereeSidepanel/>
-
+      <RefereeSidepanel refereeName={user?.name || "3aw"} refereeId={user?.id || 0} />
       </div>
 
       {/* Main Content Section */}
