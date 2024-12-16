@@ -255,8 +255,11 @@ export const viewProjectThemes = async (): Promise<Theme[]> => {
       // Parse the XML response body
       const parsedResponse = parser.parse(response.body);
       // Extract the ViewProjectThemeResult from the parsed response
-      const result = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.diffgram.DocumentElement.Themes
+      let result = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.diffgram.DocumentElement.Themes
 
+      if (!Array.isArray(result)) {
+        result = [result];
+      }
 
     return result.map((theme: any) => ({
       ThemeId: theme.themeId,
