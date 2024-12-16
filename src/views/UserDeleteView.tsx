@@ -4,6 +4,8 @@ import UserSidepanel from "@/components/ui/UserSidepanel";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
+
+
 const columns = ["ID", "Name", "Budget", "Status", "Delete"];
 
 export const UserDeleteView: React.FC = () => {

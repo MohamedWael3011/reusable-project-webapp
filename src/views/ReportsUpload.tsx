@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
-import ComboBox from '../components/ui/combobox';
+import ComboBox from "../components/ui/combobox";
 import UserSidepanel from "../components/ui/UserSidepanel";
 import Calendar from "@/components/Calendar";
 
 // Assuming getAcceptedSubmissions is imported
-import { getAcceptedSubmissions, submitReport } from "../apis/user.api";
+import { getAcceptedSubmissions, Submission, submitReport } from "../apis/user.api";
 import { useUser } from "../hooks/useUser"; // Importing the UserContext
 
 const ReportsUpload: React.FC = () => {
-  const { user } = useUser();  // Accessing user context
-  const [AcceptedSubmissions, setAcceptedSubmission] = useState(''); // Accepting both number or string
+  const { user } = useUser(); // Accessing user context
+  const [AcceptedSubmissions, setAcceptedSubmission] = useState<{ name: string, id: number }>({ name: '', id: 0 });
   const [ReportTitle, setReportTitle] = useState('');
   const [ReportContent, setReportContent] = useState('');
   const [Date, setDate] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [submissionTitles, setSubmissionTitles] = useState<{ value: number; label: string }[]>([]); // State for storing submission titles
+  const [data, setData] = useState<Submission[]>([]);  // State for storing submissions data
 
   // Fetch accepted submissions when component mounts
   useEffect(() => {
@@ -28,21 +28,12 @@ const ReportsUpload: React.FC = () => {
       }
 
       try {
-        const userId = user.id; // Get the user ID from the context
-        // console.log("Fetching accepted submissions for user:", userId); // Debugging
+        const userId = user.id;
+        const submissions = await getAcceptedSubmissions(userId); // Fetch submissions
 
-        const submissions = await getAcceptedSubmissions(userId);
-        // console.log("Raw API Response:", submissions); // Log the raw response
-
-        if (Array.isArray(submissions) && submissions.length > 0) {
-          const titles = submissions.map((submission) => ({
-            value: submission.submissionId, // Submission ID as value
-            label: submission.title, // Submission title as label
-          }));
-          // console.log("Formatted submission titles:", titles); // Debugging
-          setSubmissionTitles(titles);
+        if (submissions.length > 0) {
+          setData(submissions);  // Store the full submissions data
         } else {
-          // console.log("No valid submissions found for user ID", userId); // Debugging
           setErrorMessage("No valid submissions found.");
         }
       } catch (error) {
@@ -51,39 +42,45 @@ const ReportsUpload: React.FC = () => {
     };
 
     fetchAcceptedSubmissions();
-  }, [user]); 
-
+  }, [user]);
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
+    if (AcceptedSubmissions.id === 0 || !ReportTitle || !ReportContent ||!Date) {
+      setErrorMessage("Please select a valid project and fill in all fields.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const success = await submitReport(
-        typeof AcceptedSubmissions === 'number' ? AcceptedSubmissions : 0, // Ensure we pass a number
-        ReportTitle,          // The report title
-        ReportContent        // The report content
+        AcceptedSubmissions.id,  // Use the selected submission ID
+        ReportTitle,             // The report title
+        ReportContent,            // The report content
+        Date
       );
-
       if (success) {
-        alert("Report uploaded successfully!");
-        setAcceptedSubmission(''); // Reset inputs
+        // Reset form after successful upload
+        setAcceptedSubmission({ name: '', id: 0 });
         setReportTitle('');
         setReportContent('');
         setDate(null);
+        console.log("Report successfully uploaded");
       } else {
         setErrorMessage("Failed to upload the report. Please try again.");
       }
     } catch (error) {
-      console.error("Error submitting the report:", error);
-      setErrorMessage("An error occurred while submitting the report. Please try again.");
+      console.error("Error submitting report:", error);
+      setErrorMessage("An error occurred while submitting the report.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDateSelect = (date: Date) => {
-    setDate(date.toDateString());
+    setDate(date.toISOString().split("T")[0]);
   };
 
   return (
@@ -105,14 +102,17 @@ const ReportsUpload: React.FC = () => {
                 <div className="flex-1 p-4 rounded-xl">
                   <ComboBox
                     label="Accepted Submissions"
-                    value={AcceptedSubmissions}
-                    onChange={(e) => setAcceptedSubmission(e.target.value)} // Ensure you cast value to number
-                    options={submissionTitles.map(submission => submission.label)} // Ensure this is an array of strings
+                    value={AcceptedSubmissions.name}
+                    onChange={(e) => {
+                      const selectedSub = data.find(accepted => accepted.title === e.target.value);  // Match by title
+                      if (selectedSub) {
+                        setAcceptedSubmission({ name: selectedSub.title, id: selectedSub.submissionId });
+                      }
+                    }}
+                    options={data.map(submission => submission.title)}  // Use the full submission list
                     required={true}
                     placeholder="Choose Project"
                   />
-                  بب
-
                 </div>
                 {/* Report Title */}
                 <div className="flex-1 p-4 rounded-xl">
@@ -161,16 +161,16 @@ const ReportsUpload: React.FC = () => {
 
             {/* Buttons */}
             <div className="flex justify-center space-x-48">
-              <Button className="w-md mt-4" size={"lg"} type='submit' disabled={loading}>
+              <Button className="w-md mt-4" size={"lg"} type="submit" disabled={loading}>
                 {loading ? "Uploading..." : "Upload"}
               </Button>
 
               <Button
                 className="w-md mt-4 border border-blue-800 text-blue-800 bg-white hover:bg-[#033469] hover:text-white"
                 size={"lg"}
-                type='button'
+                type="button"
                 onClick={() => {
-                  setAcceptedSubmission('');
+                  setAcceptedSubmission({ name: '', id: 0 });
                   setReportTitle('');
                   setReportContent('');
                   setDate(null);

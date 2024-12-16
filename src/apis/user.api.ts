@@ -144,6 +144,40 @@ export const deleteProposal = async (
     return false;
   }
 };
+////////////////////////////////
+
+
+export const updateProposal = async (
+  submissionId: number,
+  proposal: string
+): Promise<boolean> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <UpdateProposal xmlns="http://tempuri.org/">
+          <submissionid>${submissionId}</submissionid>
+          <proposal>${proposal}</proposal>
+        </UpdateProposal>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  // Set the SOAPAction header
+  headers.SOAPAction = "http://tempuri.org/UpdateProposal";
+
+  try {
+    const { response } = await soapRequest({ url, headers, xml });
+    const parsedResponse = parser.parse(response.body);
+    const result =
+      parsedResponse.Envelope.Body.UpdateProposalResponse
+        .UpdateProposalResult as boolean;
+    return result;
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return false;
+  }
+};
+
 
 // Other functions follow the similar structure...
 
@@ -183,7 +217,8 @@ export const submitProposal = async (
 export const submitReport = async (
   submissionId: number,
   title: string,
-  report: string
+  report: string,
+  uploaddate: string
 ): Promise<boolean> => {
   // Debugging: Log input parameters
   console.log("submitReport called with:", { submissionId, title, report });
@@ -202,6 +237,7 @@ export const submitReport = async (
           <submissionid>${submissionId}</submissionid>
           <title>${title}</title>
           <report>${report}</report>
+          <uploaddate>${uploaddate}</uploaddate>
         </SubmitReport>
       </soap:Body>
     </soap:Envelope>

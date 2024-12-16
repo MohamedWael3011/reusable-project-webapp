@@ -258,16 +258,13 @@ export const viewProjectThemes = async (): Promise<Theme[]> => {
     const result = parsedResponse.Envelope.Body.ViewProjectThemeResponse.ViewProjectThemeResult.diffgram.DocumentElement.Themes
 
 
-
-    // If themes is not an array, convert it into an array
-
-    // Map over the themes and extract necessary properties
     return result.map((theme: any) => ({
       ThemeId: theme.themeId,
       Name: theme.name,
       Duration: theme.duration || "N/A",  // Default to "N/A" if undefined
       Deadline: theme.deadline || "N/A",  // Default to "N/A" if undefined
       Budget: theme.budget  || "N/A"
+
     }));
   } catch (error) {
     console.error("SOAP Request Error:", error);
