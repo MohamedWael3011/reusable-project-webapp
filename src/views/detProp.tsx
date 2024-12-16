@@ -2,10 +2,8 @@
 // import LOGO from "../assets/logo.png";
 // import RefereeIcon from "../assets/referee-icon.png";
 import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faRecycle } from "@fortawesome/free-solid-svg-icons";
 import { getProposal, updateProposal } from "@/apis/referee.api";
-import { Router, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 import { useNavigate } from "react-router-dom";
 import { sendEmail } from "../apis/email.api";
