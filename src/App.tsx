@@ -23,6 +23,10 @@ import UserDeleteView from "./views/UserDeleteView";
 import SubmitProposal from "./views/proposalsubmission";
 import ReportsUpload from "./views/ReportsUpload";
 import Referee from "./views/Referee";
+// import proposals from "./views/Proposals";
+import Proposals from "./views/Proposals";
+// import ReportsPage from "./views/reports";
+import Reports from "./views/reports";
 
 const App = () => {
   return (
@@ -46,6 +50,8 @@ const App = () => {
       <Route path="/user/submitproposal" element={<SubmitProposal/>} />
       <Route path="/user/submitreport" element={<ReportsUpload/>} />
       <Route path="/referee" element={<Referee/>} />
+      <Route path="/referee/proposals" element={<Proposals/>} />
+      <Route path="/referee/ReportsPage" element={<Reports/>} />
       <Route path="/referee/DetailedProposalView" element={<DetailedProposalView/>} />
       <Route path="/referee/DetailedReportsView" element={<DetailedReportsView/>} />
 

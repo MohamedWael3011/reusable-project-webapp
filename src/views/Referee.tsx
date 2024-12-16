@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
 import DropdownComponent from "@/components/ui/dropdown";
 import LOGO from "../assets/logo.png";
 import RefereeIcon from "../assets/referee-icon.png";
-import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
 import { Button } from "@/components/ui/button";
 import { useUser } from "../hooks/useUser";
+import { viewAllproposals ,getReport, Proposals } from "@/apis/referee.api";
+import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 
 const Referee = () => {
   const dropdownTitle = "Review";
@@ -21,37 +23,73 @@ const Referee = () => {
     },
   ];
 
-  const [selectedScreen, setSelectedScreen] = useState("Proposals"); // Default screen
+  //const [selectedScreen, setSelectedScreen] = useState("Proposals"); // Default screen
 
-  const proposals = [
-    { id: 2, theme: "assignment", title: "OS" },
-    { id: 3, theme: "Project", title: "Sp" },
-    { id: 4, theme: "assignment", title: "Spm" },
-    { id: 5, theme: "assignment", title: "DS" },
-    { id: 1, theme: "Project", title: "DB" },
-    { id: 6, theme: "Project", title: "DB" },
-  ];
+  // const proposals = [
+  //   { id: 2, theme: "assignment", title: "OS" },
+  //   { id: 3, theme: "Project", title: "Sp" },
+  //   { id: 4, theme: "assignment", title: "Spm" },
+  //   { id: 5, theme: "assignment", title: "DS" },
+  //   { id: 1, theme: "Project", title: "DB" },
+  //   { id: 6, theme: "Project", title: "DB" },
+  // ];
 
-  const reports = [
-    { id: 2, theme: "assignment", title: "OS" },
-    { id: 3, theme: "Project", title: "Sp" },
-    { id: 4, theme: "assignment", title: "Spm" },
-    { id: 5, theme: "assignment", title: "DS" },
-    { id: 1, theme: "Project", title: "DB" },
-    { id: 6, theme: "Project", title: "DB" },
-  ];
+  // const reports = [
+  //   { id: 2, theme: "assignment", title: "OS" },
+  //   { id: 3, theme: "Project", title: "Sp" },
+  //   { id: 4, theme: "assignment", title: "Spm" },
+  //   { id: 5, theme: "assignment", title: "DS" },
+  //   { id: 1, theme: "Project", title: "DB" },
+  //   { id: 6, theme: "Project", title: "DB" },
+  // ];
 
-  const handleDropdownChange = (option: string) => {
-    if (option === "Review Proposal") {
-      setSelectedScreen("Proposals");
-    } else if (option === "Review Report") {
-      setSelectedScreen("Reports");
-    }
-  };
+
+    const [proposalData, setProposalData] = useState<Proposals[] | null>([]);
+    const [reportData, setReportData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [selectedScreen, setSelectedScreen] = useState("Proposals");
+  
+   useEffect(() => {
+       const fetchProposalData = async () => {
+         setLoading(true);
+         try {
+           const proposals = await viewAllproposals(); // Fetch themes from the API
+           setProposalData(proposals);
+         } catch (error) {
+           console.error("Error fetching themes:", error);
+         } finally {
+           setLoading(false);
+         }
+       };
+   
+       fetchProposalData();
+     }, [selectedScreen]);
+  
+    // const fetchProposalData = async () => {
+    //   const data = await viewAllproposals(); // Pass the `subid` dynamically if needed
+    //   if (data) {
+    //     setProposalData(data.Table || []); // Adjust based on the response structure
+    //   }
+    // };
+  
+    const fetchReportData = async () => {
+      const data = await getReport(1); // Pass the `reportid` dynamically if needed
+      if (data) {
+        setReportData(data.Table || []); // Adjust based on the response structure
+      }
+    };
+
+    const handleDropdownChange = (option: string) => {
+      if (option === "Review Proposal") {
+        setSelectedScreen("Proposals");
+      } else if (option === "Review Report") {
+        setSelectedScreen("Reports");
+      }
+    };
 
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
-      <div className="flex flex-col items-center bg-[#CEE0F3]">
+      {/* <div className="flex flex-col items-center bg-[#CEE0F3]">
         <img src={LOGO} className="w-48 py-10" alt="Logo" />
         <div className="flex flex-col items-center">
           <img src={RefereeIcon} className="w-30 h-20" alt="Referee Icon" />
@@ -73,9 +111,14 @@ const Referee = () => {
             Logout
           </Button>
         </div>
-      </div>
+      </div> */}
+
+      
+        <RefereeSidepanel/>
+     
 
       <div className="flex flex-col py-20 pl-6">
+        
         <h2 className="text-2xl font-bold text-[#003366] mb-4 text-left pl-4">
           {selectedScreen === "Proposals" ? "Proposals" : "Reports"}
         </h2>
@@ -106,7 +149,7 @@ const Referee = () => {
 
 </thead>
             <tbody>
-              {(selectedScreen === "Proposals" ? proposals : reports).map((item) => (
+              {(selectedScreen === "Proposals" ? proposalData : reportData)?.map((item) => (
                 <tr key={item.id} className="hover:bg-[#D1E8F7]">
                   <td className="border-b py-3 px-4 text-black">{item.id}</td>
                   <td className="border-b py-3 px-4 text-black">{item.theme}</td>
