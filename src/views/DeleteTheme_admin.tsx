@@ -1,13 +1,17 @@
 import React, { useState, useCallback } from 'react';
 import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
-import AdminSidePanel from "../components/ui/AdminSidepanel";
+import AdminSidepanel from "../components/ui/AdminSidepanel";
 import { deleteTheme } from "../../src/apis/admin.api";
+import { useUser } from "@/hooks/useUser";
+
 
 const DeleteTheme: React.FC = () => {
     const [themID, setThemeId] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
+    const { user } = useUser();
+
 
     const handleDelete = useCallback(async () => {
         if (!themID) {
@@ -31,7 +35,7 @@ const DeleteTheme: React.FC = () => {
     return (
         <div className="flex h-screen">
             <div className="w-[510px] bg-gray-200">
-                <AdminSidePanel />
+            <AdminSidepanel username={user?.email || "Admin"}/>
             </div>
             <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">
                 <div className="w-full max-w-3xl flex space-x-8">

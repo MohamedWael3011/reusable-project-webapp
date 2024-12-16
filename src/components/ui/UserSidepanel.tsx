@@ -12,7 +12,13 @@ import { useUser } from "../../hooks/useUser";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
 
-const UserSidepanel: React.FC = () => {
+
+interface UserSidepanelProps {
+  username: string; // Define the prop for username
+  
+}
+
+const UserSidepanel:React.FC<UserSidepanelProps> = ({ username }) => {
   const { logout } = useUser();
   const dropdown1Title = "Proposals";
   const dropdown1Options = [
@@ -81,7 +87,7 @@ const UserSidepanel: React.FC = () => {
             size="2xl"
             style={{ color: "#033469" }}
           />
-          <span className="text-primary text-2xl text-center">User</span>
+          <span className="text-primary text-2xl text-center">{username}</span>
         </div>
         <div className="flex flex-col justify-center ">
           <div>

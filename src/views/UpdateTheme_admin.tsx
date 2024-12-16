@@ -4,11 +4,14 @@ import TextInput from "../components/ui/TextInput";
 import { Button } from "../components/ui/button";
 import AdminSidePanel from "../components/ui/AdminSidepanel";
 import { getTheme, Theme, updateTheme } from "../../src/apis/admin.api"; // Updated API import
+import { useUser } from "@/hooks/useUser";
 
 const UpdateTheme: React.FC = () => {
     const [themeID, setThemeId] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
+    const { user } = useUser();
+
     const [themeDetails, setThemeDetails] = useState({
         Name: "",
         Duration: "",
@@ -89,7 +92,7 @@ const UpdateTheme: React.FC = () => {
     return (
         <div className="flex h-screen">
             <div className="w-[510px] bg-gray-200">
-                <AdminSidePanel />
+            <AdminSidePanel username={user?.email || "Admin"}/>
             </div>
 
             <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gray-50">
