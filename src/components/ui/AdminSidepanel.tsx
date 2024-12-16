@@ -32,7 +32,7 @@ const AdminSidepanel: React.FC = () => {
         case "Assign Referee":
         navigate("/admin/assignreferee");
         break;
-      case "Final Reports":
+      case "Send Final Report":
         navigate("/admin/sendfinalreports");
         break;
       default:
