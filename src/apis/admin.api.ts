@@ -308,3 +308,90 @@ export const sendFinalReport = async (
     return false;
   }
 };
+
+
+
+interface User {
+  user_id: string; // Match the exact key name in the SOAP response
+  username: string;
+}
+
+export const fetchRefereeUsers = async (): Promise<User[]> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <Ref_id_name_table xmlns="http://tempuri.org/" />
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  try {
+    // Make the SOAP request
+    const { response } = await soapRequest({
+      url,
+      headers: { ...headers, SOAPAction: `${headers.SOAPAction}Ref_id_name_table` },
+      xml,      
+    });
+
+    const parsedResponse = parser.parse(response.body);
+    const result = parsedResponse.Envelope.Body.Ref_id_name_tableResponse.Ref_id_name_tableResult.diffgram.DocumentElement.UsersTable;
+
+    return result.map((user: any) => ({
+      user_id: user.user_id,       
+      username: user.username,
+    }));
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return [];
+  }
+};
+
+
+
+export interface Submission {
+  
+SubmissionId: number;
+  UserId: number;
+  themename: string;
+  Title: string;
+  Status: string;
+}
+
+export const fetchSubmissions = async (): Promise<Submission[]> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <Availablesubmissions xmlns="http://tempuri.org/" />
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  try {
+    const { response } = await soapRequest({
+      url, 
+      headers: {
+        "Content-Type": "text/xml;charset=UTF-8",
+        SOAPAction: "http://tempuri.org/Availablesubmissions", 
+      },
+      xml,
+    });
+
+    const parsedResponse = parser.parse(response.body);
+
+
+    const result =
+      parsedResponse.Envelope.Body.AvailablesubmissionsResponse.AvailablesubmissionsResult.Submissions;
+    console.log(result)
+
+      return result.map((submission: any) => ({
+      SubmissionId: submission.SubmissionId,
+      UserId: submission.userid,
+      ThemeName: submission.themename,
+      Title: submission.title,
+      Status: submission.status,
+    }));
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return [];
+  }
+};

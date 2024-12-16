@@ -11,8 +11,10 @@ const TableAdmin: React.FC<TableProps> = ({ title ,columns, data }) => {
 
     return(
 
-            <div className=" flex justify-center w-11/12 flex-col">
-                <h2 className=" ml-6 self-start text-primary text-2xl font-bold mb-6 text-center">{title}</h2>
+        <div className="  flex justify-center w-11/12 flex-col">
+            <h2 className=" ml-6 self-start text-primary text-2xl font-bold mb-6 text-center">{title}</h2>
+            
+            <div className="overflow-y-auto max-h-96"> {/* Add scroll and max-height */}
 
                 <table className=" w-11/12  bg-[#CEE0F3] rounded-xl border-separate border-spacing-y-4">
                     <thead>
@@ -40,6 +42,8 @@ const TableAdmin: React.FC<TableProps> = ({ title ,columns, data }) => {
 
                 </table>
             </div>
+
+        </div>
 
 
     );
