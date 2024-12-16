@@ -4,10 +4,11 @@ import RefereeIcon from "../assets/referee-icon.png";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
+import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 
 
 
-const  DetailedReportsView = () => {
+const DetailedReportsView = () => {
   const [selectedScreen, setSelectedScreen] = useState("Proposals"); // Default screen
   // const [proposalStatus, setProposalStatus] = useState("");
   // const [feedback, setFeedback] = useState(""); 
@@ -31,35 +32,17 @@ const  DetailedReportsView = () => {
   };
 
 
-  const handleDropdownChange = (option:string) => {
+  const handleDropdownChange = (option: string) => {
     setSelectedScreen(option === "Review Proposal" ? "Proposals" : "Reports");
   };
-  
 
-  
+
+
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
-     {/* Sidebar Section */}
+      {/* Sidebar Section */}
       <div className="flex flex-col items-center bg-[#CEE0F3]">
-        <img src={LOGO} className="w-48 py-10" alt="Logo" />
-        <div className="flex flex-col items-center">
-          <img src={RefereeIcon} className="w-30 h-20" alt="Referee Icon" />
-          <span className="font-semibold text-1xl font-bold text-[#003366] mb-5">Referee Name</span>
-        </div>
-
-        <div>
-        <DropdownComponent
-            title={dropdownTitle}
-            options={dropdownOptions}
-            onChange={handleDropdownChange}
-          />
-        </div>
-        <div className="flex flex-col justify-center gap-6">
-  {/* Logout Button */}
-  <button className="bg-green-600 text-white w-40 py-2 px-4 rounded-lg hover:bg-green-800">
-    Logout
-  </button>
-</div>
+      <RefereeSidepanel/>
 
       </div>
 
@@ -67,11 +50,11 @@ const  DetailedReportsView = () => {
       <div className="flex flex-col py-10 px-10">
         {/* Header Section */}
         <div className="flex space-x-4 w-full justify-between pr-40 pb-10 pl-5">
-  <p className="text-2xl font-bold text-[#003366]">{`Report ${proposalDetails.id}`}</p>
-  <p className="text-2xl font-bold text-[#003366]">{proposalDetails.theme}</p>
-  {/* <p className="text-2xl font-bold text-[#003366]">{`Proposal ${proposalDetails.title}`}</p> */}
+          <p className="text-2xl font-bold text-[#003366]">{`Report ${proposalDetails.id}`}</p>
+          <p className="text-2xl font-bold text-[#003366]">{proposalDetails.theme}</p>
+          {/* <p className="text-2xl font-bold text-[#003366]">{`Proposal ${proposalDetails.title}`}</p> */}
         </div>
-  {/* Proposal Details Section */}
+        {/* Proposal Details Section */}
         <div className="bg-[#CEE0F3] w-full max-w-4xl p-6 rounded-xl shadow-md mb-10">
           <div className="mb-4">
             <h3 className="text-lg font-bold text-[#003366]">Description</h3>
@@ -84,14 +67,14 @@ const  DetailedReportsView = () => {
 
         {/* Action Buttons */}
         <div className="flex gap-4 mt-8 justify-between pr-40">
-  <button className="bg-blue-900 text-white py-2 px-6 rounded-lg hover:bg-white hover:text-blue-900">
-    Back to Reports
-  </button>
+          <button className="bg-blue-900 text-white py-2 px-6 rounded-lg hover:bg-white hover:text-blue-900">
+            Back to Reports
+          </button>
 
-</div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default  DetailedReportsView ;
+export default DetailedReportsView;
