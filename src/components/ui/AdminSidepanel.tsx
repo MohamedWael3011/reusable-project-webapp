@@ -78,7 +78,7 @@ const AdminSidepanel: React.FC<AdminSidepanelProps> = ({ username, userId }) => 
     <div className="bg-background h-screen overflow-hidden w-full col-span-3">
       <div className="flex flex-col pt-5 pb-10 gap-5 justify-center items-center bg-[#CEE0F3] w-full ">
         <img src={LOGO} className="w-36" alt="Logo" />
-        <div className="flex justify-center flex-col items-center">
+        <div className="flex justify-center flex-col items-center cursor-pointer" onClick={()=>navigate("/admin")}>
           <FontAwesomeIcon
             icon={faUser}
             size="2xl"
