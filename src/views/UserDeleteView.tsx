@@ -5,6 +5,7 @@ import UserSidepanel from "@/components/ui/UserSidepanel";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { getSubBeforeDeadline, deleteProposal } from "../apis/user.api"; // Import the API functions
+import { useUser } from '@/hooks/useUser';
 
 const columns = ["SubmissionId", "Title", "Status", "delete"]; // Added "Delete" column
 
@@ -12,24 +13,30 @@ export const UserDeleteView: React.FC = () => {
   const [data, setData] = useState<any[]>([]); // State to hold the fetched submissions
   const [loading, setLoading] = useState<boolean>(true); // Loading state for fetching data
   const [error, setError] = useState<string | null>(null); // State to hold any error messages
-
-  // Fetch submissions when the component mounts
-  useEffect(() => {
-    const fetchSubmissions = async () => {
-      try {
-        const submissions = await getSubBeforeDeadline();
-        setData(submissions); // Update state with fetched data
-        console.log(submissions)
-      } catch (error) {
-        setError("Failed to fetch submissions");
-        console.error("Error fetching submissions:", error);
-      } finally {
-        setLoading(false);
+  const { user } = useUser();
+// Fetch submissions when the component mounts
+useEffect(() => {
+  const fetchSubmissions = async () => {
+    try {
+      if (!user || !user.id) {
+        setError("User not authenticated");
+        return;
       }
-    };
 
-    fetchSubmissions();
-  }, []); // Empty dependency array ensures this runs only once after mount
+      const submissions = await getSubBeforeDeadline(user.id); // Pass the userId to the API call
+      setData(submissions); // Update state with fetched data
+      console.log(submissions);
+    } catch (error) {
+      setError("Failed to fetch submissions");
+      console.error("Error fetching submissions:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSubmissions();
+}, [user]); // Re-run if the user object changes
+
 
   // Handle delete functionality
   const handleDelete = async (id: number) => {

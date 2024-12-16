@@ -11,8 +11,10 @@ const ProposalsPage = () => {
       setLoading(true);
       try {
         const proposals = await viewAllproposals(); // Fetch proposals from the API
-        console.log("Data Fetched" , proposals)
         setProposalData(proposals); // Store the fetched proposals in state
+        console.log("Data Fetched" , proposals)
+        
+        
       } catch (error) {
         console.error("Error fetching proposals:", error);
       } finally {

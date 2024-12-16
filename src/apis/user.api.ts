@@ -121,14 +121,14 @@ export const viewProjectTheme = async (): Promise<
 
 
 export const deleteProposal = async (
-  submissionId: number
+  submissionId: number,
 ): Promise<boolean> => {
   const xml = `
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       <soap:Body>
         <DeleteProposal xmlns="http://tempuri.org/">
           <submissionid>${submissionId}</submissionid>
-        </DeleteProposal>
+          </DeleteProposal>
       </soap:Body>
     </soap:Envelope>
   `;
@@ -149,8 +149,10 @@ export const deleteProposal = async (
 ////////////////////////////////
 
 
+
 export const updateProposal = async (
   submissionId: number,
+  userId: number, // Include userId as a parameter
   proposal: string
 ): Promise<boolean> => {
   const xml = `
@@ -158,27 +160,35 @@ export const updateProposal = async (
       <soap:Body>
         <UpdateProposal xmlns="http://tempuri.org/">
           <submissionid>${submissionId}</submissionid>
+          <userid>${userId}</userid> <!-- Include userId in the request -->
           <proposal>${proposal}</proposal>
         </UpdateProposal>
       </soap:Body>
     </soap:Envelope>
   `;
 
-  // Set the SOAPAction header
-  headers.SOAPAction = "http://tempuri.org/UpdateProposal";
+  const headers = {
+    "Content-Type": "text/xml;charset=UTF-8",
+    SOAPAction: "http://tempuri.org/UpdateProposal", // Ensure SOAPAction matches the backend method
+  };
 
   try {
-    const { response } = await soapRequest({ url, headers, xml });
+    const { response } = await soapRequest({ url, headers, xml }); // Ensure url is your SOAP endpoint
     const parsedResponse = parser.parse(response.body);
+
+    // Extract result from parsed SOAP response
     const result =
       parsedResponse.Envelope.Body.UpdateProposalResponse
         .UpdateProposalResult as boolean;
+
     return result;
   } catch (error) {
     console.error("SOAP Request Error:", error);
     return false;
   }
 };
+
+
 
 
 // Other functions follow the similar structure...
@@ -304,32 +314,10 @@ export const getAcceptedSubmissions = async (userId: number): Promise<Submission
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
 
-    // Log the full SOAP Envelope to examine the structure
-    // console.log("Full SOAP Envelope:", parsedResponse?.Envelope);
-
-    // // Check the Body and GetAcceptedSubmissionsResponse specifically
-    // console.log("SOAP Body:", parsedResponse?.Envelope?.Body);
-    // console.log("GetAcceptedSubmissionsResponse:", parsedResponse?.Envelope?.Body?.GetAcceptedSubmissionsResponse);
-
-    // Inspect the diffgram and DocumentElement more thoroughly
     const diffgram = parsedResponse?.Envelope?.Body?.GetAcceptedSubmissionsResponse?.GetAcceptedSubmissionsResult?.diffgram;
-    // console.log("diffgram:", diffgram);
-    // console.log("DocumentElement:", diffgram?.DocumentElement);
 
-    // If Submissions is not found, log the structure of DocumentElement
-    // if (diffgram?.DocumentElement) {
-    //   console.log("DocumentElement structure:", diffgram?.DocumentElement);
-    // }
-
-    // Try to find Submissions from the structure
     const result = diffgram?.DocumentElement?.Submissions || [];
 
-    // If there are no submissions, log this for debugging
-    // if (result.length === 0) {
-    //   console.log("No submissions found in the response.");
-    // }
-
-    // Map the result to match the Submission type
     return result.map((submission: any) => ({
       submissionId: submission.submissionId ?? 0,
       userId: submission.userId ?? userId,
@@ -347,12 +335,13 @@ export const getAcceptedSubmissions = async (userId: number): Promise<Submission
 
 
 
-
-export const getSubBeforeDeadline = async (): Promise<any[]> => {
+export const getSubBeforeDeadline = async (userId: number): Promise<any[]> => {
   const xml = `
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       <soap:Body>
-        <GetSubBeforeDeadline xmlns="http://tempuri.org/" />
+        <GetSubBeforeDeadline xmlns="http://tempuri.org/">
+          <userId>${userId}</userId>
+        </GetSubBeforeDeadline>
       </soap:Body>
     </soap:Envelope>
   `;
@@ -367,18 +356,17 @@ export const getSubBeforeDeadline = async (): Promise<any[]> => {
       xml,
     });
 
-// Parse the XML response body
-const parsedResponse = parser.parse(response.body);
+    // Parse the XML response body
+    const parsedResponse = parser.parse(response.body);
 
-// Extract the Submissions from the parsed response
-let result = parsedResponse.Envelope.Body.GetSubBeforeDeadlineResponse.GetSubBeforeDeadlineResult.diffgram.DocumentElement.Submissions;
-//  || [];
+    // Extract the Submissions from the parsed response
+    let result = parsedResponse.Envelope.Body.GetSubBeforeDeadlineResponse.GetSubBeforeDeadlineResult.diffgram.DocumentElement.Submissions;
 
-
-    console.log(result)
-    if(!Array.isArray(result)){
-      result = [result]
+    // If result is not an array, wrap it in an array
+    if (!Array.isArray(result)) {
+      result = [result];
     }
+
     // Map the data into a JavaScript-friendly format
     return result.map((submission: any) => ({
       SubmissionId: submission.submissionId,
@@ -386,7 +374,6 @@ let result = parsedResponse.Envelope.Body.GetSubBeforeDeadlineResponse.GetSubBef
       Proposal: submission.proposal,
       Status: submission.status,
       Title: submission.title,
-      
     }));
   } catch (error) {
     console.error("SOAP Request Error:", error);

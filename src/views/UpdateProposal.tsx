@@ -3,6 +3,7 @@ import UserSidepanel from "@/components/ui/UserSidepanel";
 import React, { useState } from "react";
 import { Button } from "../components/ui/button";
 import { updateProposal } from "../apis/user.api"; // Adjust the import path as needed
+import { useUser } from '@/hooks/useUser';
 
 const UpdateProposal: React.FC = () => {
   const [proposalID, setProposalId] = useState("");
@@ -10,31 +11,38 @@ const UpdateProposal: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const { user } = useUser();
 
-  const handleUpdate = async () => {
-    if (!proposalID || !proposalContent) {
-      setErrorMessage("Please provide a valid Proposal ID and content.");
-      return;
+const handleUpdate = async () => {
+  if (!proposalID || !proposalContent) {
+    setErrorMessage("Please provide a valid Proposal ID and content.");
+    return;
+  }
+
+  if (!user || !user.id) {
+    setErrorMessage("User information is not available. Please log in again.");
+    return;
+  }
+
+  setLoading(true);
+  setSuccessMessage("");
+  setErrorMessage("");
+
+  try {
+    const success = await updateProposal(parseInt(proposalID), user.id, proposalContent); // Pass user.id to the API call
+    if (success) {
+      setSuccessMessage("Proposal updated successfully!");
+    } else {
+      setErrorMessage("Failed to update the proposal. You may not have the correct permissions.");
     }
+  } catch (error) {
+    console.error("Error updating proposal:", error);
+    setErrorMessage("An error occurred while updating the proposal.");
+  } finally {
+    setLoading(false);
+  }
+};
 
-    setLoading(true);
-    setSuccessMessage("");
-    setErrorMessage("");
-
-    try {
-      const success = await updateProposal(parseInt(proposalID), proposalContent);
-      if (success) {
-        setSuccessMessage("Proposal updated successfully!");
-      } else {
-        setErrorMessage("Failed to update the proposal. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error updating proposal:", error);
-      setErrorMessage("An error occurred while updating the proposal.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex h-screen">

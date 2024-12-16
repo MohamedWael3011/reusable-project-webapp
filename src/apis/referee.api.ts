@@ -188,12 +188,13 @@ export const viewAllproposals = async (): Promise<Proposals[] | null> => {
   try {
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
-    console.log(parsedResponse);
+    
+    console.log(response);
 
     // Extract the proposals data from the response
     const result = parsedResponse?.Envelope?.Body?.viewAllproposalsResponse?.viewAllproposalsResult?.Proposals;
 
-    console.log(result)
+    // console.log(result)
     if (result && Array.isArray(result)) {
       return result.map((item: any) => ({
         submissionId: item.submissionId,
@@ -211,6 +212,7 @@ export const viewAllproposals = async (): Promise<Proposals[] | null> => {
     return null;
   }
 };
+
 
 
 export const viewAllreports = async (): Promise<Reports[] | null> => {
