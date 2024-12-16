@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { viewAllproposals, Proposals } from "@/apis/referee.api"; // Importing the API and interface
-import { getRefProposals } from "@/apis/referee.api"; // Importing the getRefProposals API function
-import RefereeSidepanel from "@/components/ui/RefereeSidepanel"; // Side panel component
-import { useUser } from "@/hooks/useUser"; // Importing the UserContext to get the user information
+import { viewAllproposals, Proposals } from "../apis/referee.api"; 
+import { getRefProposals } from "../apis/referee.api"; 
+import RefereeSidepanel from "@/components/ui/RefereeSidepanel"; 
+import { useUser } from "@/hooks/useUser"; 
 import { useNavigate } from "react-router-dom";
 
 const ProposalsPage = () => {
@@ -22,18 +22,18 @@ const ProposalsPage = () => {
         if (user) {
           // Fetch the proposal ids related to the referee (current user)
           const refereeProposals = await getRefProposals(user.id);
-
           if (refereeProposals && Array.isArray(refereeProposals)) {
             // Fetch all proposals
             const allProposals = await viewAllproposals();
-
+              console.log("allproposal>>" + allProposals)
             if (allProposals) {
               // Filter proposals based on the ids we got from getRefProposals
               const filteredProposals = allProposals.filter((proposal) =>
                 refereeProposals.some((refProposal) => refProposal.submissionId === proposal.submissionId)
               );
-
               setProposalData(filteredProposals); // Store the filtered proposals in state
+              console.log("filteredProposals>>"+ filteredProposals)
+
             } else {
               setError("No proposals found for this referee.");
               setProposalData([]); // Set empty if no proposals found
@@ -65,7 +65,10 @@ const ProposalsPage = () => {
 
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
-      <RefereeSidepanel />
+
+      <RefereeSidepanel refereeName={user?.name || "3aw"} refereeId={user?.id || 0} />
+
+
       <div className="flex flex-col py-20 pl-6">
         <h2 className="text-2xl font-bold text-[#003366] mb-4 text-left pl-4">Proposals</h2>
         <p className="text-blue-900 mb-3 text-left pl-2">

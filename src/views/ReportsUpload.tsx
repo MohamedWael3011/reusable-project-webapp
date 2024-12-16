@@ -70,6 +70,7 @@ const ReportsUpload: React.FC = () => {
         setReportContent('');
         setDate(null);
         console.log("Report successfully uploaded");
+        
       } else {
         setErrorMessage("Failed to upload the report. Please try again.");
       }
