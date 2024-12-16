@@ -304,32 +304,10 @@ export const getAcceptedSubmissions = async (userId: number): Promise<Submission
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
 
-    // Log the full SOAP Envelope to examine the structure
-    // console.log("Full SOAP Envelope:", parsedResponse?.Envelope);
-
-    // // Check the Body and GetAcceptedSubmissionsResponse specifically
-    // console.log("SOAP Body:", parsedResponse?.Envelope?.Body);
-    // console.log("GetAcceptedSubmissionsResponse:", parsedResponse?.Envelope?.Body?.GetAcceptedSubmissionsResponse);
-
-    // Inspect the diffgram and DocumentElement more thoroughly
     const diffgram = parsedResponse?.Envelope?.Body?.GetAcceptedSubmissionsResponse?.GetAcceptedSubmissionsResult?.diffgram;
-    // console.log("diffgram:", diffgram);
-    // console.log("DocumentElement:", diffgram?.DocumentElement);
 
-    // If Submissions is not found, log the structure of DocumentElement
-    // if (diffgram?.DocumentElement) {
-    //   console.log("DocumentElement structure:", diffgram?.DocumentElement);
-    // }
-
-    // Try to find Submissions from the structure
     const result = diffgram?.DocumentElement?.Submissions || [];
 
-    // If there are no submissions, log this for debugging
-    // if (result.length === 0) {
-    //   console.log("No submissions found in the response.");
-    // }
-
-    // Map the result to match the Submission type
     return result.map((submission: any) => ({
       submissionId: submission.submissionId ?? 0,
       userId: submission.userId ?? userId,

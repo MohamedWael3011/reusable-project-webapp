@@ -6,13 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
 import { Button } from "@/components/ui/button";
 import { useUser } from "../hooks/useUser";
-import { viewAllproposals ,getReport, Proposals } from "@/apis/referee.api";
+import { viewAllproposals, getReport, Proposals } from "@/apis/referee.api";
 import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 
 const Referee = () => {
   const dropdownTitle = "Review";
-    const { logout } = useUser();
-    const dropdownOptions = [
+  const { logout } = useUser();
+  const dropdownOptions = [
     {
       label: "Review Proposal",
       icon: <FontAwesomeIcon icon={faPaperPlane} />,
@@ -44,81 +44,54 @@ const Referee = () => {
   // ];
 
 
-    const [proposalData, setProposalData] = useState<Proposals[] | null>([]);
-    const [reportData, setReportData] = useState<any[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [selectedScreen, setSelectedScreen] = useState("Proposals");
-  
-   useEffect(() => {
-       const fetchProposalData = async () => {
-         setLoading(true);
-         try {
-           const proposals = await viewAllproposals(); // Fetch themes from the API
-           setProposalData(proposals);
-         } catch (error) {
-           console.error("Error fetching themes:", error);
-         } finally {
-           setLoading(false);
-         }
-       };
-   
-       fetchProposalData();
-     }, [selectedScreen]);
-  
-    // const fetchProposalData = async () => {
-    //   const data = await viewAllproposals(); // Pass the `subid` dynamically if needed
-    //   if (data) {
-    //     setProposalData(data.Table || []); // Adjust based on the response structure
-    //   }
-    // };
-  
-    const fetchReportData = async () => {
-      const data = await getReport(1); // Pass the `reportid` dynamically if needed
-      if (data) {
-        setReportData(data.Table || []); // Adjust based on the response structure
+  const [proposalData, setProposalData] = useState<Proposals[] | null>([]);
+  const [reportData, setReportData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedScreen, setSelectedScreen] = useState("Proposals");
+
+  useEffect(() => {
+    const fetchProposalData = async () => {
+      setLoading(true);
+      try {
+        const proposals = await viewAllproposals(); // Fetch themes from the API
+        setProposalData(proposals);
+      } catch (error) {
+        console.error("Error fetching themes:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const handleDropdownChange = (option: string) => {
-      if (option === "Review Proposal") {
-        setSelectedScreen("Proposals");
-      } else if (option === "Review Report") {
-        setSelectedScreen("Reports");
-      }
-    };
+    fetchProposalData();
+  }, [selectedScreen]);
+
+  // const fetchProposalData = async () => {
+  //   const data = await viewAllproposals(); // Pass the `subid` dynamically if needed
+  //   if (data) {
+  //     setProposalData(data.Table || []); // Adjust based on the response structure
+  //   }
+  // };
+
+  const fetchReportData = async () => {
+    const data = await getReport(1); // Pass the `reportid` dynamically if needed
+    if (data) {
+      setReportData(data.Table || []); // Adjust based on the response structure
+    }
+  };
+
+  const handleDropdownChange = (option: string) => {
+    if (option === "Review Proposal") {
+      setSelectedScreen("Proposals");
+    } else if (option === "Review Report") {
+      setSelectedScreen("Reports");
+    }
+  };
 
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
-      {/* <div className="flex flex-col items-center bg-[#CEE0F3]">
-        <img src={LOGO} className="w-48 py-10" alt="Logo" />
-        <div className="flex flex-col items-center">
-          <img src={RefereeIcon} className="w-30 h-20" alt="Referee Icon" />
-          <span className="font-semibold text-1xl font-bold text-[#003366] mb-5">Referee Name</span>
-        </div>
-
-        <div>
-          <DropdownComponent
-            title={dropdownTitle}
-            options={dropdownOptions}
-            onChange={handleDropdownChange} // Pass handleDropdownChange as the onChange handler
-          />
-        </div>
-        <div className="flex flex-col justify-center gap-6">
-        <Button
-            className="w-full flex justify-center items-center -mt-10 h-10 text-white bg-green-500 rounded-lg z-10"
-            onClick={logout}
-          >
-            Logout
-          </Button>
-        </div>
-      </div> */}
-
-      
-        <RefereeSidepanel/>
-     
-
+      <RefereeSidepanel />
       <div className="flex flex-col py-20 pl-6">
-        
+
         <h2 className="text-2xl font-bold text-[#003366] mb-4 text-left pl-4">
           {selectedScreen === "Proposals" ? "Proposals" : "Reports"}
         </h2>
@@ -130,24 +103,24 @@ const Referee = () => {
 
         <div className="bg-[#CEE0F3] w-full max-w-4xl overflow-x-auto p-4 rounded-xl">
           <table className="table-auto w-full border-collapse text-black">
-          <thead>
+            <thead>
 
-{selectedScreen === "Proposals"
-? 
-    <tr className="text-[#003366]">
-        <th className="border-b-2 py-2 px-4 text-left">ID</th>
-        <th className="border-b-2 py-2 px-4 text-left">Theme Name</th>
-        <th className="border-b-2 py-2 px-4 text-left">Title</th>
-        <th className="border-b-2 py-2 px-4 text-right pr-9"></th>
-    </tr>
-:  <tr className="text-[#003366]">
-<th className="border-b-2 py-2 px-4 text-left">ID</th>
-<th className="border-b-2 py-2 px-4 text-left">Reports</th>
-<th className="border-b-2 py-2 px-4 text-left">Title</th>
-<th className="border-b-2 py-2 px-4 text-right pr-9"></th>
- </tr>}
+              {selectedScreen === "Proposals"
+                ?
+                <tr className="text-[#003366]">
+                  <th className="border-b-2 py-2 px-4 text-left">ID</th>
+                  <th className="border-b-2 py-2 px-4 text-left">Theme Name</th>
+                  <th className="border-b-2 py-2 px-4 text-left">Title</th>
+                  <th className="border-b-2 py-2 px-4 text-right pr-9"></th>
+                </tr>
+                : <tr className="text-[#003366]">
+                  <th className="border-b-2 py-2 px-4 text-left">ID</th>
+                  <th className="border-b-2 py-2 px-4 text-left">Reports</th>
+                  <th className="border-b-2 py-2 px-4 text-left">Title</th>
+                  <th className="border-b-2 py-2 px-4 text-right pr-9"></th>
+                </tr>}
 
-</thead>
+            </thead>
             <tbody>
               {(selectedScreen === "Proposals" ? proposalData : reportData)?.map((item) => (
                 <tr key={item.id} className="hover:bg-[#D1E8F7]">

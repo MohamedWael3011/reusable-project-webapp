@@ -38,7 +38,7 @@ const RefereeSidepanel: React.FC = () => {
   
     return (
       <div className="bg-background h-[100%] overflow-hidden w-full">
-        <div className="flex flex-col pt-10 pb-10 gap-5 justify-evenly items-center bg-[#CEE0F3] w-full ">
+        <div className="flex flex-col h-[100%] pt-10 pb-10 gap-5 justify-evenly items-center bg-[#CEE0F3] w-full ">
           <img src={LOGO} className="w-48" alt="Logo" />
           <div className="flex justify-center flex-col ">
             <FontAwesomeIcon icon={faUser} size="2xl" style={{color: "#033469",}}/>

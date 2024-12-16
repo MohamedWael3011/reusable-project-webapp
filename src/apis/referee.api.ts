@@ -13,7 +13,7 @@ const parser = new XMLParser({
   ignoreAttributes: false,
   removeNSPrefix: true,
 });
-
+ 
 // Create Account API
 // export const createAccount = async (
 //   username: string,
@@ -252,7 +252,62 @@ export const viewAllreports = async (): Promise<Reports[] | null> => {
   }
 };
 
+export interface SoapEnvelope {
+  Envelope: {
+    Body: {
+      GetRefProposalsResponse: {
+        GetRefProposalsResult: {
+          'diffgr:diffgram': {
+            DocumentElement: {
+              SubmissionReferees: { SubmissionId: number }[];
+            };
+          };
+        };
+      };
+    };
+  };
+}
 
+export const getRefProposals = async (refereeId: number): Promise<Proposals[]> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <GetRefProposals xmlns="http://tempuri.org/">
+          <refereeId>${refereeId}</refereeId>
+        </GetRefProposals>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  const headers = {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/GetRefProposals'
+  };
+
+  try {
+    const { response } = await soapRequest({ url, headers, xml });
+    const parsedResponse = parser.parse(response.body);
+
+    const diffgram = parsedResponse?.Envelope?.Body?.GetRefProposalsResponse?.GetRefProposalsResult?.diffgram;
+
+    if (!diffgram) {
+      return [];
+    }
+
+    const submissionReferees = diffgram?.DocumentElement?.SubmissionReferees;
+    const submissions = Array.isArray(submissionReferees) ? submissionReferees : [submissionReferees];
+
+    return submissions.map((submission: any) => ({
+      submissionId: submission.SubmissionId ?? 0,
+      status: submission.Status ?? "",
+      title: submission.Title ?? "",
+      themename: submission.ThemeName ?? "",
+    }));
+
+  } catch (error) {
+    return []; 
+  }
+};
 
 
 export interface Proposals {
