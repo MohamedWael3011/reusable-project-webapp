@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import soapRequest from "easy-soap-request";
 import { XMLParser } from "fast-xml-parser";
-import { UserProfile } from "./user.api";
 
 const url = "http://localhost:51415/R_Service.asmx"; // Replace with your ASMX URL
 const headers = {
@@ -174,7 +173,6 @@ export const createProposalReviewEmail = async (
 
 
 
-// Corrected API call for fetching proposals
 export const viewAllproposals = async (): Promise<Proposals[] | null> => {
   const xml = `
     <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -189,13 +187,16 @@ export const viewAllproposals = async (): Promise<Proposals[] | null> => {
   try {
     const { response } = await soapRequest({ url, headers, xml });
     const parsedResponse = parser.parse(response.body);
+
+  console.log("Raw SOAP Response:", response.body);
+  console.log("Parsed Response:", JSON.stringify(parsedResponse, null, 2));
     
-    console.log(response);
 
     // Extract the proposals data from the response
     const result = parsedResponse?.Envelope?.Body?.viewAllproposalsResponse?.viewAllproposalsResult?.Proposals;
 
-    // console.log(result)
+    console.log("result>> " + result)
+
     if (result && Array.isArray(result)) {
       return result.map((item: any) => ({
         submissionId: item.submissionId,
@@ -402,3 +403,6 @@ export interface Reports {
   SubmissionID: number;
   title: string;
 };
+
+
+
