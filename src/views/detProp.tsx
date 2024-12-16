@@ -4,6 +4,7 @@ import RefereeIcon from "../assets/referee-icon.png";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRecycle } from '@fortawesome/free-solid-svg-icons';
+import RefereeSidepanel from "@/components/ui/RefereeSidepanel";
 
 
 
@@ -41,28 +42,7 @@ const  DetailedProposalView = () => {
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
      {/* Sidebar Section */}
-      <div className="flex flex-col items-center bg-[#CEE0F3]">
-        <img src={LOGO} className="w-48 py-10" alt="Logo" />
-        <div className="flex flex-col items-center">
-          <img src={RefereeIcon} className="w-30 h-20" alt="Referee Icon" />
-          <span className="font-semibold text-1xl font-bold text-[#003366] mb-5">Referee Name</span>
-        </div>
-
-        <div>
-        <DropdownComponent
-            title={dropdownTitle}
-            options={dropdownOptions}
-            onChange={handleDropdownChange}
-          />
-        </div>
-        <div className="flex flex-col justify-center gap-6">
-  {/* Logout Button */}
-  <button className="bg-green-600 text-white w-40 py-2 px-4 rounded-lg hover:bg-green-800">
-    Logout
-  </button>
-</div>
-
-      </div>
+    <RefereeSidepanel/>
 
       {/* Main Content Section */}
       <div className="flex flex-col py-10 px-10">
