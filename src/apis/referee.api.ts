@@ -342,6 +342,38 @@ export const getRefReports = async (refereeId: number): Promise<Reports[]> => {
   }
 };
 
+// Update Proposal API
+export const updateProposal = async (
+  submissionid: number,
+  status: string
+): Promise<boolean> => {
+  const xml = `
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <UpdateProposal xmlns="http://tempuri.org/">
+          <submissionid>${submissionid}</submissionid>
+          <status>${status}</status>
+        </UpdateProposal>
+      </soap:Body>
+    </soap:Envelope>
+  `;
+
+  headers.SOAPAction = "http://tempuri.org/UpdateProposal";
+
+  try {
+    const { response } = await soapRequest({ url, headers, xml });
+    const parsedResponse = parser.parse(response.body);
+    const result =
+      parsedResponse.Envelope.Body.UpdateProposalResponse
+        .UpdateProposalResult as boolean;
+
+    return result;
+  } catch (error) {
+    console.error("SOAP Request Error:", error);
+    return false;
+  }
+};
+
 
 
 
