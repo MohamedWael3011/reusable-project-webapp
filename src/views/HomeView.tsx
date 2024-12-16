@@ -10,9 +10,9 @@ export const HomeView = () => {
   useEffect(() => {
     if (!user) {
       return;
-    } else if (user?.Role === "Admin") {
+    } else if (user?.role === "Admin") {
       navigate("/admin");
-    } else if (user?.Role === "User") {
+    } else if (user?.role === "User") {
       navigate("/user");
     } else {
       navigate("");
