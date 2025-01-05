@@ -41,7 +41,7 @@ const ReportsPage = () => {
 
   return (
     <div className="bg-background h-screen grid lg:grid-cols-[25%_auto]">
-      <RefereeSidepanel />
+      <RefereeSidepanel refereeName={user?.name || "3aw"} refereeId={user?.id || 0} />
       <div className="flex flex-col py-20 pl-6">
         <h2 className="text-2xl font-bold text-[#003366] mb-4 text-left pl-4">
           Reports

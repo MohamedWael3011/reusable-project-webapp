@@ -50,9 +50,10 @@ const RefereeSidepanel: React.FC<RefereeSidepanelProps> = ({ refereeName, refere
             size="2xl"
             style={{ color: "#033469" }}
           />
-          <span className="text-primary text-2xl  text-center">Referee</span>
+
+
+          <span className="text-primary text-2xl text-center">{refereeName} <br/> ID: {refereeId}</span>
         </div>
-          <span className="text-primary text-2xl text-center">{refereeName}ID:{refereeId}</span>
         <div className="flex flex-col justify-center gap-0">
           <div>
             <DropdownComponent 
